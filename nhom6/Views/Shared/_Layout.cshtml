@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="MÁT">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>QUẦN ÁO THỜI TRANG TỐI GIẢN | MÁT</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="@Url.Content("~/Frontend/css/bootstrap.min.css")" type="text/css">
+    <link rel="stylesheet" href="@Url.Content("~/Frontend/css/font-awesome.min.css")" type="text/css">
+    <link rel="stylesheet" href="@Url.Content("~/Frontend/css/elegant-icons.css")" type="text/css">
+    <link rel="stylesheet" href="@Url.Content("~/Frontend/css/magnific-popup.css")" type="text/css">
+    <link rel="stylesheet" href="@Url.Content("~/Frontend/css/nice-select.css")" type="text/css">
+    <link rel="stylesheet" href="@Url.Content("~/Frontend/css/owl.carousel.min.css")" type="text/css">
+    <link rel="stylesheet" href="@Url.Content("~/Frontend/css/slicknav.min.css")" type="text/css">
+    <link rel="stylesheet" href="@Url.Content("~/Frontend/css/style.css")" type="text/css">
+
+</head>
+
+<body>
+    <!--Preloader-->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!--Offcanvas Menu for mobile-->
+    @RenderPage("OffcanvasMenu.cshtml")
+
+    <!--Header-->
+    @RenderPage("Header.cshtml")
+    <div>
+        @RenderBody()
+    </div>
+
+    <!--Footer-->
+    @RenderPage("Footer.cshtml")
+
+    <!--JS library-->
+    <script src="@Url.Content("~/Frontend/js/jquery-3.3.1.min.js")"></script>
+    <script src="@Url.Content("~/Frontend/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Frontend/js/jquery.nice-select.min.js")"></script>
+    <script src="@Url.Content("~/Frontend/js/jquery.nicescroll.min.js")"></script>
+    <script src="@Url.Content("~/Frontend/js/jquery.magnific-popup.min.js")"></script>
+    <script src="@Url.Content("~/Frontend/js/jquery.countdown.min.js")"></script>
+    <script src="@Url.Content("~/Frontend/js/jquery.slicknav.js")"></script>
+    <script src="@Url.Content("~/Frontend/js/mixitup.min.js")"></script>
+    <script src="@Url.Content("~/Frontend/js/owl.carousel.min.js")"></script>
+    <script src="@Url.Content("~/Frontend/js/main.js")"></script>
+
+</body>
+</html>
