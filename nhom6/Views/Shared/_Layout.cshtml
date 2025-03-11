@@ -25,6 +25,7 @@
 </head>
 
 <body>
+
     <!--Preloader-->
     <div id="preloder">
         <div class="loader"></div>
@@ -53,6 +54,8 @@
     <script src="@Url.Content("~/Frontend/js/mixitup.min.js")"></script>
     <script src="@Url.Content("~/Frontend/js/owl.carousel.min.js")"></script>
     <script src="@Url.Content("~/Frontend/js/main.js")"></script>
+
+    @RenderSection("scripts", required: false)
 
 </body>
 </html>

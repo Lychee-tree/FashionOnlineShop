@@ -106,10 +106,13 @@ ol {
 	margin: 0;
 }
 
+.row {
+    -webkit-justify-content: inherit;
+    justify-content: center;
+}
 /*---------------------
   Helper CSS
 -----------------------*/
-
 .section-title {
 	margin-bottom: 45px;
 	text-align: center;
@@ -1515,7 +1518,24 @@ ol {
   Shop
 -----------------------*/
 
+.col-lg-3.col-md-3 {
+	display: flex;
+	flex-direction: column;
+}
+
+section.shop-details {
+    display: grid;
+    grid-template-areas:
+        "lt rt";
+    grid-template-columns: 2fr 1fr;
+}
+
+label.active {
+    border: 2px solid black !important; /* Viền đen khi được chọn */
+}
+
 .product__details__pic {
+	grid-area: lt;
 	text-align: center;
 	background: #f3f2ee;
 	padding: 40px 0 60px;
@@ -1573,7 +1593,8 @@ ol {
 }
 
 .product__details__breadcrumb {
-	margin-bottom: 30px;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 .product__details__breadcrumb a {
@@ -1620,7 +1641,11 @@ ol {
 }
 
 .product__details__text {
-	text-align: center;
+/*	text-align: center;*/
+}
+
+.product__details__stock {
+	padding: 10px 10px;
 }
 
 .product__details__text h4 {
@@ -1669,8 +1694,9 @@ ol {
 }
 
 .product__details__option__size {
-	display: inline-block;
-	margin-right: 50px;
+	display: block;
+	padding: 10px 10px;
+	/* margin-right: 50px; */
 }
 
 .product__details__option__size span {
@@ -1704,16 +1730,18 @@ ol {
 }
 
 .product__details__option__color {
-	display: inline-block;
-	position: relative;
+	display: flex;
+	padding: 10px 10px;
+	/*	position: relative;*/
 	top: 10px;
+	align-items: center;
 }
 
 .product__details__option__color span {
 	color: #111111;
 	display: inline-block;
 	margin-right: 10px;
-	position: relative;
+/*	position: relative;*/
 	top: -9px;
 }
 
@@ -1728,27 +1756,12 @@ ol {
 	cursor: pointer;
 }
 
-.product__details__option__color label.c-1 {
-	background: #0b090c;
-}
+/* CSS cho nút màu khi được chọn */
+/*.product__details__option__color label.active {
+	border: 2px solid black !important;*/ /* Viền đen khi được chọn */
+/*}*/
 
-.product__details__option__color label.c-2 {
-	background: #20315f;
-}
-
-.product__details__option__color label.c-3 {
-	background: #f1af4d;
-}
-
-.product__details__option__color label.c-4 {
-	background: #ed1c24;
-}
-
-.product__details__option__color label.c-9 {
-	background: #ffffff;
-}
-
-.product__details__option__color label:after {
+/*.product__details__option__color label:after {
 	position: absolute;
 	left: -3px;
 	top: -3px;
@@ -1756,7 +1769,14 @@ ol {
 	width: 36px;
 	border: 1px solid #e5e5e5;
 	content: "";
-	border-radius: 50%;
+	border-radius: 50%;*/
+}
+label.active {
+	border: 3px solid black;
+}
+
+h5.qtxt {
+	padding-bottom: 10px;
 }
 
 .product__details__option__color label input {
@@ -1765,12 +1785,17 @@ ol {
 }
 
 .product__details__cart__option {
-	margin-bottom: 25px;
+	display: flex;
+	/* margin-bottom: 25px; */
+	/* margin-top: 25px; */
+	padding: 10px 10px 20px 10px;
 }
 
 .product__details__cart__option .quantity {
-	display: inline-block;
+	display: flex;
 	margin-right: 20px;
+	justify-content: flex-start;
+	align-items: center;
 }
 
 .product__details__cart__option .quantity .pro-qty {
@@ -1778,6 +1803,7 @@ ol {
 	height: 40px;
 	border: 1px solid #e5e5e5;
 	position: relative;
+	margin-left: 20px;
 }
 
 .product__details__cart__option .quantity .pro-qty input {
@@ -1824,6 +1850,10 @@ ol {
 	margin-right: 0;
 }
 
+.product__details__stock {
+	padding: 10px;
+}
+
 .product__details__last__option h5 {
 	color: #111111;
 	font-weight: 700;
@@ -1851,7 +1881,7 @@ ol {
 }
 
 .product__details__last__option ul {
-	padding-top: 40px;
+	padding: 10px;
 }
 
 .product__details__last__option ul li {
@@ -1868,7 +1898,7 @@ ol {
 }
 
 .product__details__tab {
-	padding-top: 60px;
+/*	padding-top: 60px;*/
 }
 
 .product__details__tab .nav-tabs {
@@ -1888,7 +1918,7 @@ ol {
 
 .product__details__tab .nav-tabs .nav-item .nav-link {
 	font-size: 20px;
-	color: #b7b7b7;
+	color: #111111;
 	padding: 0;
 	border: none;
 	font-weight: 700;
@@ -1905,11 +1935,12 @@ ol {
 }
 
 .note {
-	color: #111111;
-	font-size: 18px;
-	font-weight: 700;
-	line-height: 28px;
-	margin-bottom: 25px;
+    color: #111111;
+    font-size: 18px;
+    font-weight: 200;
+    line-height: 28px;
+    margin-bottom: 25px;
+    text-align: center;
 }
 
 .product__details__tab__content__item {
@@ -3378,15 +3409,15 @@ ol {
 
 /*--------------------------------- Responsive Media Quaries -----------------------------*/
 
-@media only screen and (min-width: 1200px) {
+/*@media only screen and (min-width: 1200px) {
 	.container {
 		max-width: 1170px;
 	}
-}
+}*/
 
 /* Medium Device = 1200px */
 
-@media only screen and (min-width: 992px) and (max-width: 1199px) {
+/*@media only screen and (min-width: 992px) and (max-width: 1199px) {
 	.categories__text h2 {
 		font-size: 26px;
 	}
@@ -3402,11 +3433,11 @@ ol {
 	.testimonial__text {
 		padding: 130px 45px 175px;
 	}
-}
+}*/
 
 /* Tablet Device = 768px */
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
+/*@media only screen and (min-width: 768px) and (max-width: 991px) {
 	.header__menu ul li {
 		margin-right: 10px;
 	}
@@ -3470,11 +3501,11 @@ ol {
 	.blog__details__share ul li:last-child {
 		margin-right: 0;
 	}
-}
+}*/
 
 /* Wide Mobile = 480px */
 
-@media only screen and (max-width: 767px) {
+/*@media only screen and (max-width: 767px) {
 	.canvas__open {
 		display: block;
 		font-size: 22px;
@@ -3817,11 +3848,11 @@ ol {
 	.hero__social {
 		margin-top: 180px;
 	}
-}
+}*/
 
 /* Small Device = 320px */
 
-@media only screen and (max-width: 479px) {
+/*@media only screen and (max-width: 479px) {
 	.cart__total {
 		padding: 35px 30px 40px;
 	}
@@ -3873,4 +3904,74 @@ ol {
 	.categories__text:before {
 		height: 250px;
 	}
+
+	.product__details__option__color label {
+		height: 30px;
+		width: 30px;
+		border-radius: 50%;
+		position: relative;
+		margin-right: 10px;
+		display: inline-block;
+		margin-bottom: 10px;
+		cursor: pointer;
+	}
+
+	.product__details__option__color label .color-swatch {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
+
+	.product__details__option__color label {
+		height: 30px;
+		width: 30px;
+		border-radius: 50%;
+		position: relative;
+		margin-right: 10px;
+		display: inline-block;
+		margin-bottom: 10px;
+		cursor: pointer;
+		border: 1px solid #e5e5e5;*/ /* Thêm viền để dễ nhìn hơn */
+	/*}
+
+	.product__details__option__color label .color-swatch {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
+
+	#error-message {
+		color: red;
+		font-size: 14px;
+		margin-top: 10px;
+	}*/
+
+	/* CSS cho nút màu */
+	.product__details__option__color label {
+		display: inline-block;
+		width: 30px;
+		height: 30px;
+		border: 2px solid transparent; /* Viền trong suốt mặc định */
+		border-radius: 50%; /* Làm tròn nút màu */
+		margin: 5px;
+		cursor: pointer;
+		position: relative;
+	}
+
+	/* CSS cho nút màu khi được chọn */
+	.product__details__option__color label.active {
+		border: 2px solid black !important; /* Viền đen khi được chọn */
+	}
+
+	/* CSS cho màu nền của nút màu */
+	.product__details__option__color label span.color-swatch {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
+
+	
 }

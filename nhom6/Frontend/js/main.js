@@ -122,6 +122,13 @@
         horizrailenabled: false
     });
 
+    // Color button
+    $('input[name="color"]').on('change', function () {
+        $('input[name="color"]').parent().removeClass('active'); 
+        $(this).parent().addClass('active'); 
+        updateStockQuantity();
+    });
+
     /*------------------
         CountDown
     --------------------*/
