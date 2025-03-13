@@ -225,3 +225,20 @@ navLinks.forEach((link) => {
         link.classList.add("active");
     }
 });
+
+//Format price
+function formatPrices() {
+    let unitPrice = document.querySelectorAll('.unit-price');
+
+    unitPrice.forEach(p => {
+        let price = parseInt(p.innerText); // Change data type to int
+        if (!isNaN(price)) {
+            p.innerText = price.toLocaleString('vi-VN') + " VND";
+        }
+    });
+}
+
+//Callback function when the web is loaded
+document.addEventListener("DOMContentLoaded", formatPrices);
+//Callback function after the filters worked
+document.addEventListener("filterUpdated", formatPrices);

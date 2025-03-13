@@ -27,9 +27,11 @@
                                     <div class="card-body">
                                         <div class="shop__sidebar__categories">
                                             <ul class="nice-scroll">
-                                                <li><a href="#">Top (20)</a></li>
-                                                <li><a href="#">Bottom (20)</a></li>
-                                                <li><a href="#">Outerwear (20)</a></li>
+                                                <li><a href="#" class="category-link" data-id="0">Tất cả <span>(@Model.Count())</span></a></li>
+                                                @foreach (var category in ViewBag.Categories as List<nhom6.Models.CountModel>)
+                                                {
+                                                    <li><a href="#" class="category-link" data-id="@category.CategoryID">@category.CategoryName (@category.ProductCount)</a></li>
+                                                }
                                             </ul>
                                         </div>
                                     </div>
@@ -43,12 +45,10 @@
                                     <div class="card-body">
                                         <div class="shop__sidebar__price">
                                             <ul>
-                                                <li><a href="#">$0.00 - $50.00</a></li>
-                                                <li><a href="#">$50.00 - $100.00</a></li>
-                                                <li><a href="#">$100.00 - $150.00</a></li>
-                                                <li><a href="#">$150.00 - $200.00</a></li>
-                                                <li><a href="#">$200.00 - $250.00</a></li>
-                                                <li><a href="#">250.00+</a></li>
+                                                <li><a href="#" class="price-link" data-id="0">Tất cả</a></li>
+                                                <li><a href="#" class="price-link" data-id="1">Dưới 500.000 VND</a></li>
+                                                <li><a href="#" class="price-link" data-id="2">500.000 VND - 1.000.000 VND</a></li>
+                                                <li><a href="#" class="price-link" data-id="3">Trên 1.000.000 VND</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -159,7 +159,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" id="product-list">
                     @foreach (var item in Model)
                     {
                         <div class="col-lg-4 col-md-6 col-sm-6">
@@ -176,16 +176,16 @@
                                 <div class="product__item__text">
                                     <h6>@item.ProductName</h6>
                                     <a href="#" class="add-cart">+ Add To Cart</a>
-                                    <h5>@item.UnitPrice</h5>
+                                    <h5 class="unit-price">@item.UnitPrice</h5>
                                     <div class="product__color__select">
-                                        <label for="pc-37">
-                                            <input type="radio" id="pc-37">
+                                        <label for="pc-">
+                                            <input type="radio" id="pc-" name="product_color">
                                         </label>
-                                        <label class="active black" for="pc-38">
-                                            <input type="radio" id="pc-38">
+                                        <label class="active black" for="pc-">
+                                            <input type="radio" id="pc-" name="product_color">
                                         </label>
-                                        <label class="grey" for="pc-39">
-                                            <input type="radio" id="pc-39">
+                                        <label class="grey" for="pc-">
+                                            <input type="radio" id="pc-" name="product_color">
                                         </label>
                                     </div>
                                 </div>
@@ -207,3 +207,63 @@
         </div>
     </div>
 </section>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Lấy danh sách tất cả các liên kết danh mục
+        var categoryLinks = document.querySelectorAll(".category-link");
+
+        // Duyệt qua từng liên kết và thêm sự kiện click
+        categoryLinks.forEach(function (link) {
+            link.addEventListener("click", function (event) {
+                event.preventDefault(); // Ngăn chặn load lại trang
+
+                var categoryId = this.getAttribute("data-id"); // Lấy ID danh mục
+
+                // Gửi request AJAX bằng Fetch API
+                fetch(`/Product/FilterProducts?categoryId=${categoryId}`)
+                    .then(response => response.json()) // Chuyển đổi kết quả sang JSON
+                    .then(data => {
+                        var productContainer = document.getElementById("product-list");
+                        productContainer.innerHTML = "";
+                        data.forEach(product => {
+                            var productHTML = `
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                             <div class="product__item">
+                                 <div class="product__item__pic set-bg" data-setbg="${product.ImagePath}">
+                                     <ul class="product__hover">
+                                         <li><a href="#"><i class="fa fa-heart-o" style="color:black;"></i></a></li>
+                                         <li>
+                                             <a href="#"><i class="fa fa-arrows-h" style="color:black;"></i> <span>Compare</span></a>
+                                         </li>
+                                         <li><a href="#"><i class="fa fa-search" style="color:black;"></i></a></li>
+                                     </ul>
+                                 </div>
+                                 <div class="product__item__text">
+                                     <h6>${product.ProductName}</h6>
+                                     <a href="#" class="add-cart">+ Add To Cart</a>
+                                        <h5 class="unit-price">${product.UnitPrice}</h5>
+                                     <div class="product__color__select">
+                                         <label for="pc-">
+                                             <input type="radio" id="pc-" name="product_color">
+                                         </label>
+                                         <label class="active black" for="pc-">
+                                             <input type="radio" id="pc-" name="product_color">
+                                         </label>
+                                         <label class="grey" for="pc-">
+                                             <input type="radio" id="pc-" name="product_color">
+                                         </label>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>`; 
+
+                            productContainer.insertAdjacentHTML("beforeend", productHTML);
+                        });
+                        document.dispatchEvent(new Event("filterUpdated"));
+                    })
+                    .catch(error => console.error("Lỗi:", error));
+            });
+        });
+    });
+    
+</script>
