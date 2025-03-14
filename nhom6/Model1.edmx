@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="nhom6Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="btlModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="categoryID" />
@@ -22,7 +22,7 @@
           <Property Name="ColorCode" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'nhom6.dbo.ColorImage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'btl.dbo.ColorImage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ColorImage">
           <Key>
             <PropertyRef Name="ProductID" />
@@ -75,7 +75,7 @@ warning 6002: The table/view 'nhom6.dbo.ColorImage' does not have a primary key 
           <Property Name="Instock" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'nhom6.dbo.Invoice' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'btl.dbo.Invoice' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Invoice">
           <Key>
             <PropertyRef Name="InvoiceID" />
@@ -101,7 +101,7 @@ warning 6002: The table/view 'nhom6.dbo.Invoice' does not have a primary key def
           <Property Name="Note" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'btl.dbo.OrderDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="OrderDetail">
           <Key>
             <PropertyRef Name="OrderID" />
@@ -407,7 +407,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="nhom6ModelStoreContainer">
+        <EntityContainer Name="btlModelStoreContainer">
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Color" EntityType="Self.Color" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
@@ -526,7 +526,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="nhom6Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="btlModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="categoryID" />
@@ -961,7 +961,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="csdl" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="csdlEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Colors" EntityType="Self.Color" />
           <EntitySet Name="Customers" EntityType="Self.Customer" />
@@ -1062,9 +1062,9 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="nhom6ModelStoreContainer" CdmEntityContainer="csdl">
+        <EntityContainerMapping StorageEntityContainer="btlModelStoreContainer" CdmEntityContainer="csdlEntities">
           <EntitySetMapping Name="Categories">
-            <EntityTypeMapping TypeName="nhom6Model.Category">
+            <EntityTypeMapping TypeName="btlModel.Category">
               <MappingFragment StoreEntitySet="Category">
                 <ScalarProperty Name="categoryID" ColumnName="categoryID" />
                 <ScalarProperty Name="categoryName" ColumnName="categoryName" />
@@ -1073,7 +1073,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Colors">
-            <EntityTypeMapping TypeName="nhom6Model.Color">
+            <EntityTypeMapping TypeName="btlModel.Color">
               <MappingFragment StoreEntitySet="Color">
                 <ScalarProperty Name="ColorID" ColumnName="ColorID" />
                 <ScalarProperty Name="ColorName" ColumnName="ColorName" />
@@ -1082,7 +1082,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Customers">
-            <EntityTypeMapping TypeName="nhom6Model.Customer">
+            <EntityTypeMapping TypeName="btlModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
@@ -1093,7 +1093,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Discounts">
-            <EntityTypeMapping TypeName="nhom6Model.Discount">
+            <EntityTypeMapping TypeName="btlModel.Discount">
               <MappingFragment StoreEntitySet="Discount">
                 <ScalarProperty Name="DiscountID" ColumnName="DiscountID" />
                 <ScalarProperty Name="DiscountCode" ColumnName="DiscountCode" />
@@ -1104,7 +1104,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Employees">
-            <EntityTypeMapping TypeName="nhom6Model.Employee">
+            <EntityTypeMapping TypeName="btlModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
@@ -1117,7 +1117,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Instocks">
-            <EntityTypeMapping TypeName="nhom6Model.Instock">
+            <EntityTypeMapping TypeName="btlModel.Instock">
               <MappingFragment StoreEntitySet="Instock">
                 <ScalarProperty Name="PvID" ColumnName="PvID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
@@ -1128,7 +1128,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Orders">
-            <EntityTypeMapping TypeName="nhom6Model.Order">
+            <EntityTypeMapping TypeName="btlModel.Order">
               <MappingFragment StoreEntitySet="Order">
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
@@ -1143,7 +1143,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PaidStatus">
-            <EntityTypeMapping TypeName="nhom6Model.PaidStatu">
+            <EntityTypeMapping TypeName="btlModel.PaidStatu">
               <MappingFragment StoreEntitySet="PaidStatus">
                 <ScalarProperty Name="PaidStatusID" ColumnName="PaidStatusID" />
                 <ScalarProperty Name="PaidStatus" ColumnName="PaidStatus" />
@@ -1151,7 +1151,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Products">
-            <EntityTypeMapping TypeName="nhom6Model.Product">
+            <EntityTypeMapping TypeName="btlModel.Product">
               <MappingFragment StoreEntitySet="Product">
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="ProductName" ColumnName="ProductName" />
@@ -1163,7 +1163,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProductImages">
-            <EntityTypeMapping TypeName="nhom6Model.ProductImage">
+            <EntityTypeMapping TypeName="btlModel.ProductImage">
               <MappingFragment StoreEntitySet="ProductImage">
                 <ScalarProperty Name="ImageID" ColumnName="ImageID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
@@ -1172,7 +1172,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Roles">
-            <EntityTypeMapping TypeName="nhom6Model.Role">
+            <EntityTypeMapping TypeName="btlModel.Role">
               <MappingFragment StoreEntitySet="Role">
                 <ScalarProperty Name="RoleID" ColumnName="RoleID" />
                 <ScalarProperty Name="RoleName" ColumnName="RoleName" />
@@ -1180,7 +1180,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Shipping_Status">
-            <EntityTypeMapping TypeName="nhom6Model.Shipping_Status">
+            <EntityTypeMapping TypeName="btlModel.Shipping_Status">
               <MappingFragment StoreEntitySet="Shipping Status">
                 <ScalarProperty Name="ShippingStatusID" ColumnName="ShippingStatusID" />
                 <ScalarProperty Name="ShippingStatus" ColumnName="ShippingStatus" />
@@ -1188,7 +1188,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Sizes">
-            <EntityTypeMapping TypeName="nhom6Model.Size">
+            <EntityTypeMapping TypeName="btlModel.Size">
               <MappingFragment StoreEntitySet="Size">
                 <ScalarProperty Name="SizeID" ColumnName="SizeID" />
                 <ScalarProperty Name="SizeName" ColumnName="SizeName" />
@@ -1196,7 +1196,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="nhom6Model.sysdiagram">
+            <EntityTypeMapping TypeName="btlModel.sysdiagram">
               <MappingFragment StoreEntitySet="sysdiagrams">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -1207,7 +1207,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="nhom6Model.User">
+            <EntityTypeMapping TypeName="btlModel.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="userID" ColumnName="userID" />
                 <ScalarProperty Name="userName" ColumnName="userName" />
@@ -1218,7 +1218,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ColorImages">
-            <EntityTypeMapping TypeName="nhom6Model.ColorImage">
+            <EntityTypeMapping TypeName="btlModel.ColorImage">
               <MappingFragment StoreEntitySet="ColorImage">
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="ColorID" ColumnName="ColorID" />
@@ -1227,7 +1227,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Invoices">
-            <EntityTypeMapping TypeName="nhom6Model.Invoice">
+            <EntityTypeMapping TypeName="btlModel.Invoice">
               <MappingFragment StoreEntitySet="Invoice">
                 <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
@@ -1236,7 +1236,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OrderDetails">
-            <EntityTypeMapping TypeName="nhom6Model.OrderDetail">
+            <EntityTypeMapping TypeName="btlModel.OrderDetail">
               <MappingFragment StoreEntitySet="OrderDetail">
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="PvID" ColumnName="PvID" />
