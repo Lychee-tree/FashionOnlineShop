@@ -9,7 +9,7 @@ namespace nhom6.Frontend
 {
     public class ProductController : Controller
     {
-        private csdl db= new csdl();
+        private csdl1 db= new csdl1();
         // GET: Product
         public ActionResult Index()
         {
@@ -20,6 +20,11 @@ namespace nhom6.Frontend
         {
             var listProduct = db.Products.ToList();
             return View(listProduct);
+        }
+
+        public ActionResult Contact()
+        {
+            return View();
         }
     }
 }
