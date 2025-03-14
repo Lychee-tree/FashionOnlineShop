@@ -1,0 +1,140 @@
+﻿<ul class="navbar-nav bg-gradient sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: black;">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-cog"></i>
+        </div>
+        <div class="sidebar-brand-text mx-2" style="font-size:1.25rem;">Giao diện quản lý</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="index.html">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Thông tin tài khoản</span>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <!-- Nav Item - Users Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers"
+           aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-user" style="color:white;"></i>
+            <span style="color:white;">Users</span>
+        </a>
+        <div id="collapseUsers" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Quản lý người dùng</h6>
+                <a class="collapse-item" href="buttons.html">Danh sách người dùng</a>
+                <a class="collapse-item" href="cards.html">Thêm tài khoản</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Products Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProducts"
+           aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-box-open" style="color:white;"></i>
+            <span style="color:white;">Sản phẩm</span>
+        </a>
+        <div id="collapseProducts" class="collapse" aria-labelledby="headingUtilities"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Quản lý sản phẩm:</h6>
+                <a class="collapse-item" href="utilities-color.html">Danh sách sản phẩm</a>
+                <a class="collapse-item" href="utilities-border.html">Thêm sản phẩm</a>
+            </div>
+        </div>
+    </li>
+    <!-- Nav Item - Orders Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOrders"
+           aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-shopping-cart" style="color:white;"></i>
+            <span style="color:white;">Đơn hàng</span>
+        </a>
+        <div id="collapseOrders" class="collapse" aria-labelledby="headingUtilities"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Quản lý đơn hàng:</h6>
+                <a class="collapse-item" href="utilities-border.html">Đơn hàng chờ xác nhận</a>
+                <a class="collapse-item" href="utilities-color.html">Đơn hàng đã xác nhận</a>
+                <a class="collapse-item" href="utilities-border.html">Đơn hàng đã hoàn thành</a>
+            </div>
+        </div>
+    </li>
+    <!-- Nav Item - Discount Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDiscount"
+           aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-tag" style="color:white;"></i>
+            <span style="color:white;">Mã khuyến mãi</span>
+        </a>
+        <div id="collapseDiscount" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Quản lý mã</h6>
+                <a class="collapse-item" href="buttons.html">Danh sách mã khuyến mãi</a>
+                <a class="collapse-item" href="cards.html">Thêm mã khuyến mãi</a>
+            </div>
+        </div>
+    </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    <!-- Nav Item -->
+    <li class="nav-item">
+        <a class="nav-link" href="@Url.Action("Index", "Product", new { area = "" })">
+            <i class="fas fa-fw fa-border-all" style="color:white;"></i>
+            <span style="color:white;">Về giao diện khách hàng</span>
+        </a>
+    </li>
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-fw fa-door-open" style="color:white;"></i>
+            <span style="color:white;">Đăng xuất tài khoản</span>
+        </a>
+    </li>
+    <!-- Heading -->
+    <!-- Nav Item - Pages Collapse Menu -->
+    <!--<li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+           aria-expanded="true" aria-controls="collapsePages">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Pages</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Login Screens:</h6>
+                <a class="collapse-item" href="login.html">Login</a>
+                <a class="collapse-item" href="register.html">Register</a>
+                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                <div class="collapse-divider"></div>
+                <h6 class="collapse-header">Other Pages:</h6>
+                <a class="collapse-item" href="404.html">404 Page</a>
+                <a class="collapse-item" href="blank.html">Blank Page</a>
+            </div>
+        </div>
+    </li>-->
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+    <!-- Sidebar Message -->
+    <div class="sidebar-card d-none d-lg-flex">
+        <img src="~/Content/Image/logoweb.jpg" / style="width: 50%;">
+    </div>
+
+</ul>
