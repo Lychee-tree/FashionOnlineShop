@@ -50,6 +50,11 @@ namespace nhom6.Frontend
             // Truy vấn danh mục của sản phẩm
             var category = db.Categories.SingleOrDefault(c => c.categoryID == product.CategoryID);
             ViewBag.CategoryName = category?.categoryName;
+            if (category != null)
+            {
+                // Truyền đường dẫn ảnh size sang view
+                ViewBag.CategorySizeImage = category.CategorySizeImage;
+            }
 
             // Truy vấn danh sách ảnh của sản phẩm từ bảng ColorImage
             var colorImages = db.ColorImages
@@ -70,7 +75,7 @@ namespace nhom6.Frontend
 
             // Mặc định chọn ColorID đầu tiên
             var firstColor = colors.FirstOrDefault();
-            int firstColorId = firstColor?.ColorID ?? 0; // Sử dụng toán tử null-coalescing để gán giá trị mặc định nếu firstColor là null
+            int firstColorId = firstColor?.ColorID ?? 0;
             ViewBag.SelectedColorId = firstColorId;
 
             // Truy vấn các sản phẩm cùng danh mục

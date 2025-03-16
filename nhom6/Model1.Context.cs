@@ -13,10 +13,10 @@ namespace nhom6
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class nhom6Entities : DbContext
+    public partial class csdl : DbContext
     {
-        public nhom6Entities()
-            : base("name=nhom6Entities")
+        public csdl()
+            : base("name=csdl")
         {
         }
     

@@ -961,7 +961,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="nhom6Entities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="csdl" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Colors" EntityType="Self.Color" />
           <EntitySet Name="Customers" EntityType="Self.Customer" />
@@ -1062,7 +1062,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="nhom6ModelStoreContainer" CdmEntityContainer="nhom6Entities">
+        <EntityContainerMapping StorageEntityContainer="nhom6ModelStoreContainer" CdmEntityContainer="csdl">
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="nhom6Model.Category">
               <MappingFragment StoreEntitySet="Category">

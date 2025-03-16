@@ -1932,6 +1932,8 @@ h5.qtxt {
 
 .product__details__tab__content {
 	padding-top: 35px;
+	display: flex;
+	justify-content: center;
 }
 
 .note {
