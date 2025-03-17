@@ -78,6 +78,13 @@ namespace nhom6.Frontend
             int firstColorId = firstColor?.ColorID ?? 0;
             ViewBag.SelectedColorId = firstColorId;
 
+            // Lấy ảnh đầu tiên từ ColorImage tương ứng với màu hiện tại
+            var firstColorImage = db.ColorImages
+                .Where(ci => ci.ColorID == firstColorId && ci.ProductID == id)
+                .Select(ci => ci.Image)
+                .FirstOrDefault();
+            ViewBag.FirstColorImage = firstColorImage;
+
             // Truy vấn các sản phẩm cùng danh mục
             var relatedProducts = db.Products
                 .Where(p => p.CategoryID == product.CategoryID && p.ProductID != product.ProductID)

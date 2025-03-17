@@ -5,13 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{
-    var productImages = ViewBag.ProductImages as List<nhom6.ProductImage>;
-    if (productImages == null || !productImages.Any())
-    {
-        <p>Không có ảnh nào cho sản phẩm này.</p>
-    }
-}
 <div class="col-lg-12">
     <div class="product__details__breadcrumb">
         <a href="./index.html">Home</a>
@@ -25,15 +18,22 @@
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <ul class="nav nav-tabs" role="tablist" id="color-thumbnails">
+                        <!-- Ảnh đầu tiên lấy từ ColorImage -->
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">
+                                <div class="product__thumb__pic set-bg" data-setbg="@Url.Content("~/Content/Image/Product1/" + ViewBag.FirstColorImage)"></div>
+                            </a>
+                        </li>
+                        <!-- Hai ảnh còn lại lấy từ ProductImage -->
                         @{
-                            var defaultImages = ViewBag.DefaultImages as List<nhom6.ColorImage>;
-                            if (defaultImages != null && defaultImages.Any())
+                            var productImages = ViewBag.ProductImages as List<nhom6.ProductImage>;
+                            if (productImages != null && productImages.Any())
                             {
-                                for (int i = 0; i < defaultImages.Count; i++)
+                                for (int i = 0; i < productImages.Count && i < 2; i++)
                                 {
                                     <li class="nav-item">
-                                        <a class="nav-link @(i == 0 ? "active" : "")" data-toggle="tab" href="#tabs-@(i + 1)" role="tab">
-                                            <div class="product__thumb__pic set-bg" data-setbg="@Url.Content("~/Content/Image/Product1/" + defaultImages[i].Image)"></div>
+                                        <a class="nav-link" data-toggle="tab" href="#tabs-@(i + 2)" role="tab">
+                                            <div class="product__thumb__pic set-bg" data-setbg="@Url.Content("~/Content/Image/Product1/" + productImages[i].Image)"></div>
                                         </a>
                                     </li>
                                 }
@@ -43,20 +43,25 @@
                 </div>
                 <div class="col-lg-6 col-md-9">
                     <div class="tab-content" id="color-images">
-                        @if (defaultImages != null && defaultImages.Any())
-                        {
-                            for (int i = 0; i < defaultImages.Count; i++)
+                        <!-- Ảnh đầu tiên lấy từ ColorImage -->
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__pic__item">
+                                <img src="@Url.Content("~/Content/Image/Product1/" + ViewBag.FirstColorImage)" alt="">
+                            </div>
+                        </div>
+                        <!-- Hai ảnh còn lại lấy từ ProductImage -->
+                        @{
+                            if (productImages != null && productImages.Any())
                             {
-                                <div class="tab-pane @(i == 0 ? "active" : "")" id="tabs-@(i + 1)" role="tabpanel">
-                                    <div class="product__details__pic__item">
-                                        <img src="@Url.Content("~/Content/Image/Product1/" + defaultImages[i].Image)" alt="">
+                                for (int i = 0; i < productImages.Count && i < 2; i++)
+                                {
+                                    <div class="tab-pane" id="tabs-@(i + 2)" role="tabpanel">
+                                        <div class="product__details__pic__item">
+                                            <img src="@Url.Content("~/Content/Image/Product1/" + productImages[i].Image)" alt="">
+                                        </div>
                                     </div>
-                                </div>
+                                }
                             }
-                        }
-                        else
-                        {
-                            <p>Không có ảnh nào để hiển thị.</p>
                         }
                     </div>
                 </div>
@@ -128,10 +133,6 @@
                     </div>
                 </div>
             </div>
-            @*<div class="row">
-                    <div class="col-lg-12">
-                    </div>
-                </div>*@
         </div>
     </div>
 </section>
@@ -218,44 +219,27 @@
         });
 
         function updateColorImages(colorId) {
-            // Gửi yêu cầu AJAX để lấy danh sách ảnh của ColorID được chọn
-            $.ajax({
-                url: '@Url.Action("GetColorImages", "Product")', // Đường dẫn đến action trong controller
-                type: 'GET',
-                data: { colorId: colorId },
-                success: function (response) {
-                    // Cập nhật danh sách ảnh trong phần thumbnails
-                    var thumbnailsHtml = '';
-                    var imagesHtml = '';
+    // Gửi yêu cầu AJAX để lấy ảnh đầu tiên của ColorID được chọn
+    $.ajax({
+        url: '@Url.Action("GetColorImages", "Product")', // Đường dẫn đến action trong controller
+        type: 'GET',
+        data: { colorId: colorId },
+        success: function (response) {
+            if (response.length > 0) {
+                var firstImageUrl = '@Url.Content("~/Content/Image/Product1/")' + response[0].Image;
 
-                    for (var i = 0; i < response.length; i++) {
-                        var imageUrl = '@Url.Content("~/Content/Image/Product1/")' + response[i].Image;
-                        thumbnailsHtml += `
-                            <li class="nav-item">
-                                <a class="nav-link ${i === 0 ? 'active' : ''}" data-toggle="tab" href="#tabs-${i + 1}" role="tab">
-                                    <div class="product__thumb__pic set-bg" style="background-image: url('${imageUrl}');"></div>
-                                </a>
-                            </li>
-                        `;
+                // Cập nhật ảnh đầu tiên trong phần thumbnails
+                $('#color-thumbnails .nav-item:first-child .product__thumb__pic').css('background-image', 'url(' + firstImageUrl + ')');
 
-                        imagesHtml += `
-                            <div class="tab-pane ${i === 0 ? 'active' : ''}" id="tabs-${i + 1}" role="tabpanel">
-                                <div class="product__details__pic__item">
-                                    <img src="${imageUrl}" alt="">
-                                </div>
-                            </div>
-                        `;
-                    }
-
-                    // Cập nhật HTML
-                    $('#color-thumbnails').html(thumbnailsHtml);
-                    $('#color-images').html(imagesHtml);
-                },
-                error: function () {
-                    alert('Có lỗi xảy ra khi tải ảnh.');
-                }
-            });
+                // Cập nhật ảnh đầu tiên trong phần tab content
+                $('#color-images .tab-pane:first-child img').attr('src', firstImageUrl);
+            }
+        },
+        error: function () {
+            alert('Có lỗi xảy ra khi tải ảnh.');
         }
+    });
+}
 
     // Hàm cập nhật số lượng tồn kho và trạng thái nút "Thêm vào giỏ hàng"
         function updateStockQuantity() {
