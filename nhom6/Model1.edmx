@@ -99,6 +99,7 @@ warning 6002: The table/view 'nhom6.dbo.Invoice' does not have a primary key def
           <Property Name="EmployeeID" Type="int" Nullable="false" />
           <Property Name="ShippingCode" Type="nvarchar" MaxLength="50" />
           <Property Name="Note" Type="nvarchar" MaxLength="1000" />
+          <Property Name="OrderDate" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -611,6 +612,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
           <Property Name="EmployeeID" Type="Int32" Nullable="false" />
           <Property Name="ShippingCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Note" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="OrderDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Customer" Relationship="Self.FK_Order_Customer" FromRole="Order" ToRole="Customer" />
           <NavigationProperty Name="Discount" Relationship="Self.FK_Order_Discount" FromRole="Order" ToRole="Discount" />
           <NavigationProperty Name="Employee" Relationship="Self.FK_Order_Employee" FromRole="Order" ToRole="Employee" />
@@ -1139,6 +1141,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
                 <ScalarProperty Name="ShippingCode" ColumnName="ShippingCode" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,4 +1,4 @@
-/*  ---------------------------------------------------
+﻿/*  ---------------------------------------------------
     Template Name: Male Fashion
     Description: Male Fashion - ecommerce teplate
     Author: Colorib
@@ -8,7 +8,7 @@
 ---------------------------------------------------------  */
 
 'use strict';
-
+console.log("Mainjs đã thực thi xong");
 (function ($) {
 
     /*------------------
@@ -227,9 +227,9 @@ navLinks.forEach((link) => {
 });
 
 //Format price
-function formatPrices() {
+window.formatPrices = function () {
     let unitPrice = document.querySelectorAll('.unit-price');
-
+    console.log("Hàm formatPrices đã được thực thi");
     unitPrice.forEach(p => {
         let price = parseInt(p.innerText); // Change data type to int
         if (!isNaN(price)) {
@@ -238,7 +238,3 @@ function formatPrices() {
     });
 }
 
-//Callback function when the web is loaded
-document.addEventListener("DOMContentLoaded", formatPrices);
-//Callback function after the filters worked
-document.addEventListener("filterUpdated", formatPrices);
