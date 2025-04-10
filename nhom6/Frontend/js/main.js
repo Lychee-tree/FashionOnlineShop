@@ -1,4 +1,4 @@
-/*  ---------------------------------------------------
+﻿/*  ---------------------------------------------------
     Template Name: Male Fashion
     Description: Male Fashion - ecommerce teplate
     Author: Colorib
@@ -8,7 +8,7 @@
 ---------------------------------------------------------  */
 
 'use strict';
-
+console.log("Mainjs đã thực thi xong");
 (function ($) {
 
     /*------------------
@@ -225,3 +225,16 @@ navLinks.forEach((link) => {
         link.classList.add("active");
     }
 });
+
+//Format price
+window.formatPrices = function () {
+    let unitPrice = document.querySelectorAll('.unit-price');
+    console.log("Hàm formatPrices đã được thực thi");
+    unitPrice.forEach(p => {
+        let price = parseInt(p.innerText); // Change data type to int
+        if (!isNaN(price)) {
+            p.innerText = price.toLocaleString('vi-VN') + " VND";
+        }
+    });
+}
+

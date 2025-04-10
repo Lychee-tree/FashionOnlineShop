@@ -26,5 +26,7 @@ namespace nhom6.Controllers
 
             return View();
         }
+
+        
     }
 }

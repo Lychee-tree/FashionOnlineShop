@@ -1316,6 +1316,7 @@ ol {
 
 .shop__sidebar__color {
 	padding-top: 15px;
+	padding-left:5px;
 }
 
 .shop__sidebar__color label {
@@ -1329,40 +1330,14 @@ ol {
 	cursor: pointer;
 }
 
-.shop__sidebar__color label.c-1 {
-	background: #0b090c;
-}
-
-.shop__sidebar__color label.c-2 {
-	background: #20315f;
-}
-
-.shop__sidebar__color label.c-3 {
-	background: #f1af4d;
-}
-
-.shop__sidebar__color label.c-4 {
-	background: #636068;
-}
-
-.shop__sidebar__color label.c-5 {
-	background: #57594d;
-}
-
-.shop__sidebar__color label.c-6 {
-	background: #e8bac4;
-}
-
-.shop__sidebar__color label.c-7 {
-	background: #d6c1d7;
-}
-
-.shop__sidebar__color label.c-8 {
-	background: #ed1c24;
-}
-
-.shop__sidebar__color label.c-9 {
-	background: #ffffff;
+.c-0::before {
+	font-family: "FontAwesome"; /* FontAwesome 4.3 */
+	content: "\f00d"; /* Unicode của fa-times */
+	font-size: 25px;
+	color: black;
+	position: absolute;
+	left:16%;
+	top:-15%;
 }
 
 .shop__sidebar__color label:after {
@@ -1440,7 +1415,7 @@ ol {
 }
 
 .shop__product__option__right {
-	text-align: right;
+	text-align: left;
 }
 
 .shop__product__option__right p {
