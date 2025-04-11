@@ -1,0 +1,36 @@
+﻿@model nhom6.Product
+
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+}
+
+@section Styles {
+    <link href="~/Content/customdetail.css" rel="stylesheet" />
+}
+
+<a href="/" class="logo">
+    <img src="~/Content/Image/logoweb.jpg" alt="Logo Web" />
+</a>
+
+
+<section class="shop-details">
+    <div class="container">
+        <div class="product-layout">
+            <!-- Ảnh sản phẩm -->
+            <div class="product-image">
+                <img src="@Url.Content("~/Content/Image/" + Model.UnitImage)" alt="@Model.ProductName" />
+            </div>
+
+            <!-- Thông tin sản phẩm -->
+            <div class="product-info">
+                <h1>@Model.ProductName</h1>
+                <div class="product-price">Giá: <span>@Model.UnitPrice VNĐ</span></div>
+                <p class="product-description">@Model.UnitDescription</p>
+
+                <a href="@Url.Action("Edit", "Admin", new { area = "Admin", id = Model.ProductID })" class="buy-button">Edit</a>
+
+            </div>
+        </div>
+    </div>
+</section>

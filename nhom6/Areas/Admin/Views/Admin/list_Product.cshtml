@@ -1,0 +1,95 @@
+﻿@model IEnumerable<nhom6.Product>
+
+@{
+    ViewBag.Title = "list_Product";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+}
+<link rel="stylesheet" href="~/Content/customlistproduct.css" /> <!-- Link file CSS custom -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-o8CdZ/DiLJ6ISc+/JX3e7HzqAv6ZJh1VwKQ5LbFPO3t9PFe7Y8Lq7Dq4y1V7t6Pp5Z0bZT4G1pTXOYt5Nqv8qA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<h2 style="font-weight: bolder">Danh sách sản phẩm</h2>
+
+<form method="get" action="@Url.Action("list_Product", "Admin")" class="search-form">
+    <div class="search-box">
+        <input type="text" name="searchTerm" placeholder="Tìm kiếm sản phẩm..." value="@Request.QueryString["searchTerm"]" />
+        <button type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+</form>
+
+<table class="table custom-table">
+    <thead>
+        <tr>
+            <th>Tên sản phẩm</th>
+            <th>Loại</th>
+            <th>Giá</th>
+            <th>Hình ảnh</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr tr id="row_@item.ProductID">
+                    <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Category.categoryName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.UnitPrice)</td>
+                    <td>
+                        <img src="~/Content/Image/@item.UnitImage" alt="Product Image" />
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Admin", new { id = item.ProductID })" class="btn-custom">Edit</a>|
+                        <a href="@Url.Action("Detail", "Admin", new { id = item.ProductID })" class="btn-custom">Detail</a>|
+                      
+                        <!-- Xóa sử dụng Ajax -->
+                        <a href="#" class="delete-link" data-id="@item.ProductID" id="deleted">Delete</a>
+
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">Không tìm thấy sản phẩm phù hợp.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".delete-link").click(function (e) {
+            e.preventDefault(); // Ngăn chặn load lại trang
+            var productId = $(this).data("id");
+            var row = $("#row_" + productId); // Tìm đúng dòng cần xóa
+
+            if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
+                $.ajax({
+                    url: '@Url.Action("DeleteProduct", "Admin")',
+                    type: 'POST',
+                    data: { id: productId },
+                    dataType: "json",
+                    cache: false, // Ngăn cache dữ liệu cũ
+                    success: function (response) {
+                        if (response.success) {
+                            row.fadeOut(300, function () {
+                                $(this).remove(); // Xóa sản phẩm khỏi giao diện ngay
+                            });
+                        } else {
+                            alert("Xóa thất bại: " + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Lỗi Ajax: ", error);
+                        alert("Có lỗi xảy ra, vui lòng thử lại.");
+                    }
+                });
+            }
+        });
+    });
+</script>

@@ -1,0 +1,48 @@
+@model IEnumerable<nhom6.Product>
+
+@{
+    ViewBag.Title = "list_Product";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+}
+
+<h2>list_Product</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Tên sản phẩm
+        </th>
+        <th>
+            Loại
+        </th>
+        <th>
+            Giá
+        </th>
+        <th>
+            Hình ảnh
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.categoryName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UnitPrice)
+        </td>
+        <td>
+            <img src="~/Content/Image/@item.UnitImage" alt="Product Image" style="width:100px; height:auto;" />
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ProductID }) 
+        </td>
+    </tr>
+}
+
+</table>

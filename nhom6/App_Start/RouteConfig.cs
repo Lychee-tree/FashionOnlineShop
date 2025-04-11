@@ -7,6 +7,7 @@ using System.Web.Routing;
 
 namespace nhom6
 {
+
     public class RouteConfig
     {
         public static void RegisterRoutes(RouteCollection routes)
@@ -20,4 +21,5 @@ namespace nhom6
             );
         }
     }
+
 }

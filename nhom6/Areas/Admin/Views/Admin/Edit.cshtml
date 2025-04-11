@@ -1,0 +1,102 @@
+﻿@model nhom6.Product
+@using nhom6.Areas.Admin.Models
+@{
+    ViewBag.Title = "Chỉnh sửa sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+}
+
+@section Styles {
+    <link href="~/Content/customedit.css" rel="stylesheet" />
+}
+
+<header class="site-header">
+    <div class="container header-container">
+        <a href="/" class="logo">
+            <img src="~/Content/Image/logoweb.jpg" alt="Logo Web" />
+        </a>
+    </div>
+</header>
+
+<section class="edit-product">
+    <div class="container">
+        <div class="form-container">
+            <h2>Chỉnh sửa sản phẩm</h2>
+
+            @using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.ProductID)
+
+                <div class="input-group">
+                    <label for="ProductName">Tên sản phẩm</label>
+                    @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control", placeholder = "Nhập tên sản phẩm" })
+                </div>
+
+                <div class="input-group">
+                    <label for="CategoryID">Danh mục</label>
+                    @Html.DropDownListFor(model => model.CategoryID, ViewBag.Categories as SelectList, "-- Chọn danh mục --", new { @class = "form-control" })
+                </div>
+
+                <div class="input-group">
+                    <label for="UnitPrice">Giá</label>
+                    @Html.TextBoxFor(model => model.UnitPrice, new { @class = "form-control", type = "number", placeholder = "Nhập giá sản phẩm" })
+                </div>
+
+                <div class="input-group">
+                    <label for="UnitDescription">Mô tả sản phẩm</label>
+                    @Html.TextAreaFor(model => model.UnitDescription, new { @class = "form-control", rows = 4, placeholder = "Nhập mô tả..." })
+                </div>
+
+                <div class="image-preview">
+                    <label><b style="border">Hình ảnh hiện tại</b></label>
+                    <img src="~/Content/Image/@Model.UnitImage" class="product-image" alt="Ảnh sản phẩm" />
+                </div>
+
+                <div class="input-group">
+                    <label for="uploadImage">Chọn ảnh mới</label>
+                    <input type="file" name="uploadImage" class="form-control" />
+                </div>
+                //Màu, Size, Tồn kho
+                <div class="input-group">
+                    <label><b>Màu sắc, Size và Tồn kho</b></label>
+
+                    <div class="variant-row">
+                        <div>
+                            <label>Màu:</label>
+                            <select name="ColorID" class="form-control">
+                                @foreach (var color in ViewBag.Colors as SelectList)
+                                {
+                                    <option value="@color.Value">@color.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div>
+                            <label>Size:</label>
+                            <select name="SizeID" class="form-control">
+                                @foreach (var size in ViewBag.Sizes as SelectList)
+                                {
+                                    <option value="@size.Value">@size.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div>
+                            <label>Tồn kho:</label>
+                            <input type="number" name="Instock" class="form-control" min="0" />
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="button-group">
+                    <button type="submit" class="btn">Lưu</button>
+                    <a href="@Url.Action("list_Product")" class="btn">Hủy</a>
+                </div>
+            }
+        </div>
+                </div>
+            
+                            
+</section>

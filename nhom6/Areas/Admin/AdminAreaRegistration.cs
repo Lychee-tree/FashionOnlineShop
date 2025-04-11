@@ -17,7 +17,7 @@ namespace nhom6.Areas.Admin
             context.MapRoute(
                 "Admin_default",
                 "Admin/{controller}/{action}/{id}",
-                new { action = "Index", controller="Home", id = UrlParameter.Optional }
+                new { action = "Index", controller="Admin", id = UrlParameter.Optional }
             );
         }
     }

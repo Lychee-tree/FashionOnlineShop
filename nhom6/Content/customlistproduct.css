@@ -1,0 +1,124 @@
+﻿/*Nút nhấn*/
+.btn-custom {
+    background-color: #000;
+    color: #fff ;
+    border: 1px solid #fff ;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block; /* Đảm bảo nó hoạt động như nút */
+}
+
+    .btn-custom:hover {
+        background-color: #333 ;
+        color: #fff ;
+    }
+#deleted {
+   
+    background-color: #000;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block; /* Đảm bảo nó hoạt động như nút */
+}
+
+#deleted-custom:hover {
+    background-color: #333;
+    color: #fff;
+}
+/* Định dạng khung tìm kiếm và đẩy về bên phải */
+.search-form {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end; /* Đẩy form về bên phải */
+    padding-right: 130px; /* Lề phải */
+}
+
+
+/* Khung tổng đẩy về phải */
+.search-form {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    padding-right: 130px;
+}
+
+/* Form chứa input và nút */
+.search-box {
+    display: flex;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+    /* Input tìm kiếm */
+    .search-box input[type="text"] {
+        flex: 1;
+        border: none;
+        padding: 10px 12px;
+        font-size: 14px;
+        outline: none;
+    }
+
+    /* Nút kính lúp */
+    .search-box button {
+        background: #fff;
+        border: none;
+        padding: 0 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s ease;
+    }
+
+        .search-box button:hover {
+            background: #f0f0f0;
+        }
+
+
+/* Tăng kích thước bảng, căn giữa và tạo lề trái phải */
+.custom-table {
+    width: 80%; /* Kích thước bảng */
+    margin: 20px auto; /* Căn giữa bảng */
+    padding-left: 20px; /* Lề trái */
+    padding-right: 20px; /* Lề phải */
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+}
+    /* Tiêu đề bảng với chữ trắng, nền đen */
+    .custom-table thead {
+        background-color: #000; /* Nền đen */
+        color: #fff; /* Chữ trắng */
+    }
+    /* Căn giữa chữ và giảm padding của bảng */
+    .custom-table th, .custom-table td {
+        padding: 12px 16px;
+        text-align: center; /* Căn giữa ngang */
+        vertical-align: middle; /* Căn giữa dọc */
+        border: 1px solid #ddd;
+    }
+    /* Padding cho ô và căn giữa nội dung */
+    .custom-table th,
+    .custom-table td {
+        padding: 12px 16px !important;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    /* Canh chỉnh hình ảnh */
+    .custom-table img {
+        width: 60px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+/* Tiêu đề căn giữa */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}

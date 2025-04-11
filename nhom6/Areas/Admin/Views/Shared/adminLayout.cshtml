@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<!--Xóa sản phẩm-->
+@RenderSection("Scripts", required: false)
+
+<head>
+    <!-- Detail -->
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+
+    <!-- Các file CSS chung -->
+    <link href="~/Content/site.css" rel="stylesheet" />
+
+    <!-- Render section Styles nếu có -->
+    @RenderSection("Styles", required: false)
+    <!-- Detail -->
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="@Url.Content("~/Areas/Admin/Frontend/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="@Url.Content("~/Areas/Admin/Frontend/css/sb-admin-2.min.css")" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar nav -->
+        @RenderPage("Sidebar.cshtml")
+        <!--Main content -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div>
+                    @RenderBody();
+                </div>
+                @RenderPage("footer.cshtml")
+            </div>
+        </div>
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!--Log out modal-->
+        @RenderPage("logoutModal.cshtml")
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="@Url.Content("~/Areas/Admin/Frontend/vendor/jquery/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Areas/Admin/Frontend/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="@Url.Content("~/Areas/Admin/Frontend/vendor/jquery-easing/jquery.easing.min.js")"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="@Url.Content("~/Areas/Admin/Frontend/js/sb-admin-2.min.js")"></script>
+
+    <!-- Page level plugins -->
+    <script src="@Url.Content("~/Areas/Admin/Frontend/vendor/chart.js/Chart.min.js")"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="@Url.Content("~/Areas/Admin/Frontend/js/demo/chart-area-demo.js")"></script>
+    <script src="@Url.Content("~/Areas/Admin/Frontend/js/demo/chart-pie-demo.js")"></script>
+
+
+
+    <!-- Detail -->
+    <link href="~/Content/css/product-details.css" rel="stylesheet" />
+</body>
+</html>

@@ -1,0 +1,6 @@
+ public ActionResult list_Product()
+ {
+     var listProduct = db.Products.ToList();
+     return View(listProduct);
+
+ }

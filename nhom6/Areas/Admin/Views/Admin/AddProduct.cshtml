@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "Thêm sản phẩm mới";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+}
+
+@section Styles {
+    <link href="~/Content/addproductedit.css" rel="stylesheet" />
+}
+
+<header class="site-header">
+    <div class="container header-container">
+        <a href="/" class="logo">
+            <img src="~/Content/Image/logoweb.jpg" alt="Logo Web" />
+        </a>
+    </div>
+</header>
+
+<section class="edit-product">
+    <div class="container">
+        <div class="form-container">
+            @using (Html.BeginForm("AddProduct", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="form-container">
+                    <h2>Thêm sản phẩm mới</h2>
+
+                    <div class="input-group">
+                        <label for="ProductName">Tên sản phẩm</label>
+                        <input type="text" name="ProductName" class="form-control" required />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="CategoryID">Danh mục</label>
+                        <select name="CategoryID" class="form-control">
+                            <option value="1">Top</option>
+                            <option value="2">Bottom</option>
+                            <option value="3">Outerwear</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="UnitPrice">Giá</label>
+                        <input type="number" name="UnitPrice" class="form-control" required />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="UnitDescription">Mô tả sản phẩm</label>
+                        <textarea name="UnitDescription" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="uploadImage">Hình ảnh</label>
+                        <input type="file" name="uploadImage" class="form-control" />
+                    </div>
+                    <!-- Màu, Size, Tồn kho -->
+                    <div class="input-group">
+                        <label><b>Màu sắc, Size và Tồn kho</b></label>
+
+                        <div id="variant-container">
+                            <div class="variant-row">
+                                <div>
+                                    <label>Màu:</label>
+                                    <select name="ColorID_0" class="form-control">
+                                        @foreach (var color in ViewBag.Colors as SelectList)
+                                        {
+                                            <option value="@color.Value">@color.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Size:</label>
+                                    <select name="SizeID_0" class="form-control">
+                                        @foreach (var size in ViewBag.Sizes as SelectList)
+                                        {
+                                            <option value="@size.Value">@size.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Tồn kho:</label>
+                                    <input type="number" name="Instock_0" class="form-control" min="0" />
+                                </div>
+                            </div>
+                        </div>
+
+                      
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn">Thêm sản phẩm</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+@section Scripts {
+    <script>
+        let index = 1;
+
+        document.getElementById("add-variant-btn").addEventListener("click", function () {
+            const container = document.getElementById("variant-container");
+
+            const row = document.createElement("div");
+            row.classList.add("variant-row");
+
+            row.innerHTML = `
+                <div>
+                    <label>Màu:</label>
+                    <select name="ColorID_${index}" class="form-control">
+                        ${document.querySelector('select[name="ColorID_0"]').innerHTML}
+                    </select>
+                </div>
+                <div>
+                    <label>Size:</label>
+                    <select name="SizeID_${index}" class="form-control">
+                        ${document.querySelector('select[name="SizeID_0"]').innerHTML}
+                    </select>
+                </div>
+                <div>
+                    <label>Tồn kho:</label>
+                    <input type="number" name="Instock_${index}" class="form-control" min="0" />
+                </div>
+            `;
+
+            container.appendChild(row);
+            index++;
+        });
+    </script>
+}
