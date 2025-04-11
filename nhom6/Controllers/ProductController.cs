@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using nhom6.Models;
 
 namespace nhom6.Frontend
 {
@@ -16,10 +17,10 @@ namespace nhom6.Frontend
             return View();
         }
 
-        public ActionResult Shop()
-        {
-            var listProduct = db.Products.ToList();
-            return View(listProduct);
-        }
+        //public ActionResult Shop()
+        //{
+        //    var listProduct = db.Products.ToList();
+        //    return View(listProduct);
+        //}
     }
 }

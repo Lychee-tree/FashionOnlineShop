@@ -1,0 +1,75 @@
+﻿
+@model nhom6.Models.OrderModel
+@using System.Web.Mvc
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+}
+
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết đơn hàng - Shop Quần Áo</title>
+
+</head>
+<body>
+    <header>
+        <div>Chi tiết đơn hàng - Shop Quần Áo</div>
+        <nav>
+            <a href="#dashboard">Trang chủ</a>
+            <a href="#orders">Đơn hàng</a>
+            <a href="#logout">Đăng xuất</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h2>Chi tiết đơn hàng</h2>
+        <p><strong>ID đơn hàng:</strong> @Model.OrderID</p>
+        <p><strong>Tên khách hàng:</strong> @Model.Customer.CustomerName</p>
+        <p><strong>Ngày đặt:</strong> @(Model.OrderDate != null ? Model.OrderDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : "Chưa có")</p>
+        <p><strong>Tổng tiền:</strong> @Model.TotalPrice VND</p>
+        <p><strong>Hình thức thanh toán:</strong> @Model.PaidStatu.PaidStatus</p>
+        <p><strong>Trạng thái đơn hàng:</strong> @Model.OrderStatus</p>
+
+        <h3>Sản phẩm trong đơn hàng</h3>
+        <table>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
+            </tr>
+            @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+            {
+                foreach (var item in Model.OrderDetails)
+                {
+                    <tr>
+                        <td>@item.Product.ProductName</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.UnitPrice VND</td>
+                        <td>@(item.Quantity * item.UnitPrice) VND</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="4">Không có sản phẩm nào trong đơn hàng này.</td></tr>
+            }
+        </table>
+    </div>
+    <footer>&copy; 2025 Shop Quần Áo - Mọi quyền được bảo lưu</footer>
+    <script>
+        function updateTotal(input) {
+            let row = input.parentElement.parentElement;
+            let pricePerItem = parseInt(row.dataset.price);
+            let quantity = parseInt(input.value);
+            let totalCell = row.querySelector(".total-price");
+            totalCell.innerText =
+                (pricePerItem * quantity).toLocaleString() + " VND";
+        }
+    </script>
+</body>
+</html>

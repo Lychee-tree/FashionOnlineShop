@@ -13,10 +13,10 @@ namespace nhom6
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class csdl : DbContext
+    public partial class csdl1 : DbContext
     {
-        public csdl()
-            : base("name=csdl")
+        public csdl1()
+            : base("name=csdl1")
         {
         }
     
@@ -32,6 +32,7 @@ namespace nhom6
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Instock> Instocks { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<PaidStatu> PaidStatus { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductImage> ProductImages { get; set; }
@@ -42,6 +43,5 @@ namespace nhom6
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<ColorImage> ColorImages { get; set; }
         public virtual DbSet<Invoice> Invoices { get; set; }
-        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
     }
 }

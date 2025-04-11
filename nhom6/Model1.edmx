@@ -96,12 +96,11 @@ warning 6002: The table/view 'nhom6.dbo.Invoice' does not have a primary key def
           <Property Name="TotalPrice" Type="int" Nullable="false" />
           <Property Name="ShippingStatusID" Type="int" Nullable="false" />
           <Property Name="PaidStatusID" Type="int" Nullable="false" />
-          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" />
           <Property Name="ShippingCode" Type="nvarchar" MaxLength="50" />
           <Property Name="Note" Type="nvarchar" MaxLength="1000" />
+          <Property Name="OrderDate" Type="date" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="OrderDetail">
           <Key>
             <PropertyRef Name="OrderID" />
@@ -300,7 +299,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Order_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
           <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Employee">
@@ -415,6 +414,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Instock" EntityType="Self.Instock" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaidStatus" EntityType="Self.PaidStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductImage" EntityType="Self.ProductImage" Schema="dbo" store:Type="Tables" />
@@ -436,14 +436,6 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
     [Invoice].[OrderID] AS [OrderID], 
     [Invoice].[EmployeeID] AS [EmployeeID]
     FROM [dbo].[Invoice] AS [Invoice]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [OrderDetail].[OrderID] AS [OrderID], 
-    [OrderDetail].[PvID] AS [PvID], 
-    [OrderDetail].[Quantity] AS [Quantity], 
-    [OrderDetail].[TotalUnitprice] AS [TotalUnitprice]
-    FROM [dbo].[OrderDetail] AS [OrderDetail]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Customer_User" Association="Self.FK_Customer_User">
             <End Role="User" EntitySet="User" />
@@ -608,9 +600,10 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
           <Property Name="TotalPrice" Type="Int32" Nullable="false" />
           <Property Name="ShippingStatusID" Type="Int32" Nullable="false" />
           <Property Name="PaidStatusID" Type="Int32" Nullable="false" />
-          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeID" Type="Int32" />
           <Property Name="ShippingCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Note" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="OrderDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Customer" Relationship="Self.FK_Order_Customer" FromRole="Order" ToRole="Customer" />
           <NavigationProperty Name="Discount" Relationship="Self.FK_Order_Discount" FromRole="Order" ToRole="Discount" />
           <NavigationProperty Name="Employee" Relationship="Self.FK_Order_Employee" FromRole="Order" ToRole="Employee" />
@@ -618,6 +611,18 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
           <NavigationProperty Name="PaidStatu" Relationship="Self.FK_Order_PaidStatus" FromRole="Order" ToRole="PaidStatus" />
           <NavigationProperty Name="Shipping_Status" Relationship="Self.FK_Order_Shipping_Status" FromRole="Order" ToRole="Shipping_Status" />
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetail_Order" FromRole="Order" ToRole="OrderDetail" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderID" />
+            <PropertyRef Name="PvID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="PvID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="TotalUnitprice" Type="Int32" />
+          <NavigationProperty Name="Instock" Relationship="Self.FK_OrderDetail_Instock" FromRole="OrderDetail" ToRole="Instock" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_OrderDetail_Order" FromRole="OrderDetail" ToRole="Order" />
         </EntityType>
         <EntityType Name="PaidStatu">
           <Key>
@@ -721,18 +726,6 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
           <NavigationProperty Name="Employee" Relationship="Self.FK_InvoiceID_Employee" FromRole="Invoice" ToRole="Employee" />
           <NavigationProperty Name="Order" Relationship="Self.FK_Invoice_Order" FromRole="Invoice" ToRole="Order" />
         </EntityType>
-        <EntityType Name="OrderDetail">
-          <Key>
-            <PropertyRef Name="OrderID" />
-            <PropertyRef Name="PvID" />
-          </Key>
-          <Property Name="OrderID" Type="Int32" Nullable="false" />
-          <Property Name="PvID" Type="Int32" Nullable="false" />
-          <Property Name="Quantity" Type="Int32" />
-          <Property Name="TotalUnitprice" Type="Int32" />
-          <NavigationProperty Name="Instock" Relationship="Self.FK_OrderDetail_Instock" FromRole="OrderDetail" ToRole="Instock" />
-          <NavigationProperty Name="Order" Relationship="Self.FK_OrderDetail_Order" FromRole="OrderDetail" ToRole="Order" />
-        </EntityType>
         <Association Name="FK_Product_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
@@ -830,7 +823,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Order_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
           <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Employee">
@@ -961,7 +954,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="csdl" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="csdl1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Colors" EntityType="Self.Color" />
           <EntitySet Name="Customers" EntityType="Self.Customer" />
@@ -969,6 +962,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
           <EntitySet Name="Employees" EntityType="Self.Employee" />
           <EntitySet Name="Instocks" EntityType="Self.Instock" />
           <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
           <EntitySet Name="PaidStatus" EntityType="Self.PaidStatu" />
           <EntitySet Name="Products" EntityType="Self.Product" />
           <EntitySet Name="ProductImages" EntityType="Self.ProductImage" />
@@ -979,7 +973,6 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="ColorImages" EntityType="Self.ColorImage" />
           <EntitySet Name="Invoices" EntityType="Self.Invoice" />
-          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
           <AssociationSet Name="FK_Product_Category" Association="Self.FK_Product_Category">
             <End Role="Category" EntitySet="Categories" />
             <End Role="Product" EntitySet="Products" />
@@ -1062,7 +1055,7 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="nhom6ModelStoreContainer" CdmEntityContainer="csdl">
+        <EntityContainerMapping StorageEntityContainer="nhom6ModelStoreContainer" CdmEntityContainer="csdl1">
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="nhom6Model.Category">
               <MappingFragment StoreEntitySet="Category">
@@ -1139,6 +1132,17 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
                 <ScalarProperty Name="ShippingCode" ColumnName="ShippingCode" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="nhom6Model.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetail">
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="PvID" ColumnName="PvID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="TotalUnitprice" ColumnName="TotalUnitprice" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1232,16 +1236,6 @@ warning 6002: The table/view 'nhom6.dbo.OrderDetail' does not have a primary key
                 <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OrderDetails">
-            <EntityTypeMapping TypeName="nhom6Model.OrderDetail">
-              <MappingFragment StoreEntitySet="OrderDetail">
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-                <ScalarProperty Name="PvID" ColumnName="PvID" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="TotalUnitprice" ColumnName="TotalUnitprice" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

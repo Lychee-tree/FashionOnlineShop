@@ -27,9 +27,10 @@ namespace nhom6
         public int TotalPrice { get; set; }
         public int ShippingStatusID { get; set; }
         public int PaidStatusID { get; set; }
-        public int EmployeeID { get; set; }
+        public Nullable<int> EmployeeID { get; set; }
         public string ShippingCode { get; set; }
         public string Note { get; set; }
+        public Nullable<System.DateTime> OrderDate { get; set; }
     
         public virtual Customer Customer { get; set; }
         public virtual Discount Discount { get; set; }
