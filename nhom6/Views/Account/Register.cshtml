@@ -1,0 +1,108 @@
+﻿@model nhom6.ViewModels.RegisterViewModel
+
+@{
+    ViewBag.Title = "Đăng ký tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- CSS -->
+<style>
+    .register-popup {
+        max-width: 500px;
+        margin: 80px auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+ 
+
+    body {
+        background: linear-gradient(to right, #e0eafc, #cfdef3);
+        min-height: 100vh;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: bold;
+    }
+
+    .btn-submit {
+        width: 100%;
+        background-color: #6c757d;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 10px;
+        transition: background 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: #5a6268;
+    }
+
+    label {
+        font-weight: bold;
+    }
+</style>
+
+<div class="register-popup">
+    <h2>Đăng ký</h2>
+
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group mb-3">
+            @Html.Label("Tên người dùng", htmlAttributes: new { @class = "fw-bold" })
+            @Html.TextBoxFor(m => m.userName, new { @class = "form-control", placeholder = "Nhập tên người dùng" })
+            @Html.ValidationMessageFor(m => m.userName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.Label("Mật khẩu", htmlAttributes: new { @class = "fw-bold" })
+            @Html.PasswordFor(m => m.userPass, new { @class = "form-control", placeholder = "Mật khẩu" })
+            @Html.ValidationMessageFor(m => m.userPass, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.Label("Nhập lại mật khẩu", htmlAttributes: new { @class = "fw-bold" })
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Nhập lại mật khẩu" })
+            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.Label("Email", htmlAttributes: new { @class = "fw-bold" })
+            @Html.TextBoxFor(m => m.userEmail, new { @class = "form-control", placeholder = "Email" })
+            @Html.ValidationMessageFor(m => m.userEmail, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.roleID, "Vai trò", htmlAttributes: new { @class = "fw-bold text-start d-block" })
+            @Html.DropDownListFor(m => m.roleID, Model.RoleList, "-- Chọn vai trò --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.roleID, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-submit mt-3">Đăng ký</button>
+        <div class="text-center mt-3">
+            <span>Đã có tài khoản? </span>
+            <a href="@Url.Action("Login", "Account")">Đăng nhập ngay</a>
+        </div>
+
+    }
+
+    @if (ViewBag.Success != null)
+    {
+        <div class="alert alert-success mt-3 text-center">
+            @ViewBag.Success
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

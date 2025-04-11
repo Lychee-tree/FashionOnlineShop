@@ -8,7 +8,10 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-5">
-                    <div class="header__top__right">
+                    <!--Đoạn này sửa để thêm Đăng xuất, Admin site-->
+                    <div class="header__top__right d-flex justify-content-end align-items-center">
+                        @Html.Partial("_LoginPartial")
+                    <!---->
                         <div class="header__top__hover">
                             <span><i class="fa fa-user"></i></span>
                             <ul>
@@ -16,15 +19,15 @@
                                 <li><a href="#">Sign in</a></li>
                             </ul>
                         </div>
+
                         <div class="header__top__hover">
-                            <span>Usd <i class="arrow_carrot-down"></i></span>
+                            <span>USD <i class="arrow_carrot-down"></i></span>
                             <ul>
                                 <li>USD</li>
                                 <li>VND</li>
                             </ul>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
@@ -32,7 +35,7 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="./index.html"><img src="~/Content/Image/logoweb.jpg"/></a>
+                    <a href="./index.html"><img src="~/Content/Image/logoweb.png" /></a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
