@@ -4,6 +4,35 @@
     ViewBag.Title = "Chi tiết sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
 }
+<style>
+    .instock-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .instock-table th, .instock-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .instock-table th {
+            background-color: #f2f2f2;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .instock-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        .instock-table tr:hover {
+            background-color: #f1f1f1;
+        }
+</style>
 
 @section Styles {
     <link href="~/Content/customdetail.css" rel="stylesheet" />
@@ -12,7 +41,6 @@
 <a href="/" class="logo">
     <img src="~/Content/Image/logoweb.jpg" alt="Logo Web" />
 </a>
-
 
 <section class="shop-details">
     <div class="container">
@@ -28,8 +56,30 @@
                 <div class="product-price">Giá: <span>@Model.UnitPrice VNĐ</span></div>
                 <p class="product-description">@Model.UnitDescription</p>
 
-                <a href="@Url.Action("Edit", "Admin", new { area = "Admin", id = Model.ProductID })" class="buy-button">Edit</a>
+                <h3 style="font-weight:bolder">Thông tin kích thước và màu sắc</h3>
 
+                <!-- Bảng tồn kho -->
+                <table class="instock-table">
+                    <thead>
+                        <tr>
+                            <th>Màu sắc</th>
+                            <th>Size</th>
+                            <th>Tồn kho</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var instock in Model.Instocks)
+                        {
+                            <tr>
+                                <td>@instock.Color.ColorName</td>
+                                <td>@instock.Size.SizeName</td>
+                                <td>@instock.Instock1</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <a href="@Url.Action("Edit", "Admin", new { area = "Admin", id = Model.ProductID })" class="buy-button">Edit</a>
             </div>
         </div>
     </div>

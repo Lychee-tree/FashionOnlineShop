@@ -1,4 +1,6 @@
-﻿using nhom6.Areas.Admin.Models;
+﻿using Antlr.Runtime.Misc;
+using nhom6.Areas.Admin.Models;
+using nhom6.Areas.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,29 +26,40 @@ namespace nhom6.Areas.Admin.Controllers
         //Tìm kiếm
         public ActionResult list_Product(string searchTerm)
         {
-            var products = db.Products.Include(p => p.Category).AsQueryable();
+            var products = db.Products
+                .Include(p => p.Category)
+                .Include(p => p.Instocks.Select(i => i.Color))
+                .Include(p => p.Instocks.Select(i => i.Size))
+                .ToList();
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                // Sử dụng LIKE chính xác hơn
-                products = products.Where(p => DbFunctions.Like(p.ProductName, "%" + searchTerm + "%"));
+                products = products.Where(p => p.ProductName.Contains(searchTerm)).ToList();
             }
 
-            ViewBag.CurrentSearch = searchTerm;
-            return View(products.ToList());
+            return View(products);
         }
 
-        //Xem chi tiết
 
+        ////Xem chi tiết
         public ActionResult Detail(int id)
         {
-            var product = db.Products.Include("Category").FirstOrDefault(p => p.ProductID == id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
+            var product = db.Products.Include(p => p.Instocks.Select(i => i.Color)).Include(p => p.Instocks.Select(i => i.Size))
+                                     .FirstOrDefault(p => p.ProductID == id);
+
             return View(product);
         }
+
+
+        //public ActionResult Detail(int id)
+        //{
+        //    var product = db.Products.Include("Category").FirstOrDefault(p => p.ProductID == id);
+        //    if (product == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(product);
+        //}
 
         //Xóa sản phẩm
         [HttpPost]
@@ -54,25 +67,41 @@ namespace nhom6.Areas.Admin.Controllers
         {
             try
             {
-                using (var db = new csdl1()) // Đảm bảo DbContext của bạn đúng
+                var product = db.Products.Find(id);
+                if (product == null)
                 {
-                    var product = db.Products.FirstOrDefault(p => p.ProductID == id);
-                    if (product == null)
-                    {
-                        return Json(new { success = false, message = "Sản phẩm không tồn tại." });
-                    }
-
-                    db.Products.Remove(product);
-                    db.SaveChanges(); // Xóa sản phẩm khỏi database
-
-                    return Json(new { success = true });
+                    return Json(new { success = false, message = "Không tìm thấy sản phẩm." });
                 }
+
+                // Xóa các bảng phụ bằng SQL thủ công
+                db.Database.ExecuteSqlCommand("DELETE FROM Instock WHERE ProductID = @p0", id);
+                db.Database.ExecuteSqlCommand("DELETE FROM ProductImage WHERE ProductID = @p0", id);
+                db.Database.ExecuteSqlCommand("DELETE FROM ColorImage WHERE ProductID = @p0", id);
+
+                // Sau khi xóa hết phụ thuộc -> xóa Product
+                db.Products.Remove(product);
+                db.SaveChanges();
+
+                return Json(new { success = true });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = "Lỗi: " + ex.Message });
             }
         }
+
+
+
+        private string GetFullErrorMessage(Exception ex)
+        {
+            while (ex.InnerException != null)
+            {
+                ex = ex.InnerException;
+            }
+            return ex.Message;
+        }
+
+
         //Edit
         [HttpPost]
         public ActionResult Edit(FormCollection form, HttpPostedFileBase uploadImage)
@@ -99,10 +128,7 @@ namespace nhom6.Areas.Admin.Controllers
 
             db.Entry(product).State = EntityState.Modified;
 
-            // Xoá dữ liệu tồn kho cũ
-            var oldInstocks = db.Instocks.Where(x => x.ProductID == productId);
-            db.Instocks.RemoveRange(oldInstocks);
-            db.SaveChanges();
+            
 
             // Thêm dữ liệu tồn kho mới
             var variantIndices = form.GetValues("variantIndex");
