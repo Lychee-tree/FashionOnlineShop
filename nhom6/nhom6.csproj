@@ -2107,7 +2107,6 @@
     <Content Include="Areas\Admin\Views\Shared\footer.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\logoutModal.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\Admin\Accept.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\ListOrder.cshtml" />
     <EntityDeploy Include="Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -2116,6 +2115,7 @@
     <Content Include="Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\Admin\AcceptedOrders.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
