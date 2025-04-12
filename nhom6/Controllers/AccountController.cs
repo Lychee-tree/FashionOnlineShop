@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using nhom6.ViewModels;
-// Đảm bảo đúng namespace chứa csdlEntities và User
+using nhom6.ViewModels; // Đảm bảo đúng namespace chứa csdlEntities và User
 
 namespace nhom6.Controllers
 {
@@ -15,17 +14,8 @@ namespace nhom6.Controllers
         // GET: /Account/Register
         public ActionResult Register()
         {
-            var roles = db.Roles.ToList();
-
             var viewModel = new RegisterViewModel
             {
-                RoleList = roles.Select(r => new SelectListItem
-                {
-                    Value = r.RoleID.ToString(),
-                    Text = r.RoleName,
-                    Selected = r.RoleID == 3 // Gán mặc định Customer
-                }).ToList(),
-
                 roleID = 3 // Mặc định là Customer
             };
 
@@ -39,7 +29,9 @@ namespace nhom6.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Kiểm tra tài khoản trùng hoàn toàn (userName, email, pass, role)
+                model.roleID = 3; // Bắt buộc là Customer
+
+                // Kiểm tra tài khoản trùng hoàn toàn
                 var existingUser = db.Users.FirstOrDefault(u =>
                     u.userName == model.userName &&
                     u.userEmail == model.userEmail &&
@@ -48,7 +40,6 @@ namespace nhom6.Controllers
 
                 if (existingUser != null)
                 {
-                    // Đã tồn tại → thông báo và chuyển sang Login
                     TempData["AlreadyRegistered"] = "Bạn đã có tài khoản! Đăng nhập ngay!";
                     return RedirectToAction("Login", "Account");
                 }
@@ -68,36 +59,15 @@ namespace nhom6.Controllers
                         userEmail = model.userEmail,
                         roleID = model.roleID
                     };
-
                     db.Users.Add(newUser);
                     db.SaveChanges();
 
-                    ViewBag.Success = "🎉 Đăng ký thành công!";
-                    ModelState.Clear(); // Reset form
+                    // ✅ Gán thông báo vào TempData để hiện pop-up bên Login
+                    TempData["SuccessMessage"] = "Đăng ký thành công! Vui lòng đăng nhập.";
 
-                    // Reset RoleList cho dropdown
-                    model = new RegisterViewModel
-                    {
-                        RoleList = db.Roles.Select(r => new SelectListItem
-                        {
-                            Value = r.RoleID.ToString(),
-                            Text = r.RoleName,
-                            Selected = r.RoleID == 3
-                        }).ToList(),
-                        roleID = 3
-                    };
-
-                    return View(model);
+                    return RedirectToAction("Login", "Account");
                 }
             }
-
-            // Nếu có lỗi, load lại RoleList để dropdown không null
-            model.RoleList = db.Roles.Select(r => new SelectListItem
-            {
-                Value = r.RoleID.ToString(),
-                Text = r.RoleName,
-                Selected = r.RoleID == model.roleID
-            }).ToList();
 
             return View(model);
         }
@@ -113,7 +83,7 @@ namespace nhom6.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model)
         {
-            Session.Clear(); // 🔥 Rất quan trọng: xóa session cũ trước mỗi lần login
+            Session.Clear(); // Xoá session cũ
 
             if (ModelState.IsValid)
             {
@@ -126,7 +96,7 @@ namespace nhom6.Controllers
                     Session["UserName"] = user.userName;
                     Session["RoleID"] = user.roleID;
 
-                    return RedirectToAction("Index", "Home"); // 🎯 Chung cho cả employee và customer
+                    return RedirectToAction("Index", "Product");
                 }
 
                 ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không đúng.");
@@ -135,11 +105,11 @@ namespace nhom6.Controllers
             return View(model);
         }
 
+        // GET: /Account/Logout
         public ActionResult Logout()
         {
-            Session.Clear(); // 🧹 Xoá toàn bộ session
+            Session.Clear();
             return RedirectToAction("Login", "Account");
         }
-
     }
 }
