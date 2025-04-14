@@ -62,6 +62,17 @@ namespace nhom6.Controllers
                     db.Users.Add(newUser);
                     db.SaveChanges();
 
+                    // Tạo Customer tương ứng
+                    Customer customer = new Customer
+                    {
+                        CustomerName = model.CustomerName,
+                        PhoneNumber = model.PhoneNumber,
+                        Address = model.Address,
+                        UserID = newUser.userID
+                    };
+                    db.Customers.Add(customer);
+                    db.SaveChanges();
+
                     // ✅ Gán thông báo vào TempData để hiện pop-up bên Login
                     TempData["SuccessMessage"] = "Đăng ký thành công! Vui lòng đăng nhập.";
 
@@ -111,5 +122,6 @@ namespace nhom6.Controllers
             Session.Clear();
             return RedirectToAction("Login", "Account");
         }
+
     }
 }

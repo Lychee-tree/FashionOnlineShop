@@ -64,6 +64,13 @@
             @Html.ValidationMessageFor(m => m.userName, "", new { @class = "text-danger" })
         </div>
 
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.CustomerName, "Họ tên người dùng")
+            @Html.TextBoxFor(m => m.CustomerName, new { @class = "form-control", placeholder = "Họ và tên" })
+            @Html.ValidationMessageFor(m => m.CustomerName, "", new { @class = "text-danger" })
+        </div>
+
         <div class="form-group mb-3">
             @Html.Label("Mật khẩu", htmlAttributes: new { @class = "fw-bold" })
             @Html.PasswordFor(m => m.userPass, new { @class = "form-control", placeholder = "Mật khẩu" })
@@ -82,7 +89,18 @@
             @Html.ValidationMessageFor(m => m.userEmail, "", new { @class = "text-danger" })
         </div>
 
-     
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.PhoneNumber, "Số điện thoại")
+            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Số điện thoại" })
+            @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.Address, "Địa chỉ")
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Địa chỉ" })
+            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+        </div>
+
 
         <button type="submit" class="btn btn-submit mt-3">Đăng ký</button>
         <div class="text-center mt-3">

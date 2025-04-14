@@ -34,6 +34,18 @@ namespace nhom6.ViewModels
 
         // 🔽 List dropdown Role
         public List<SelectListItem> RoleList { get; set; }
+
+        
+        // Thông tin Customer
+        [Required(ErrorMessage = "Họ tên là bắt buộc")]
+        public string CustomerName { get; set; }
+
+        [Required(ErrorMessage = "Số điện thoại là bắt buộc")]
+        [RegularExpression(@"^0\d{9}$", ErrorMessage = "Số điện thoại phải bắt đầu bằng 0 và có đúng 10 chữ số")]
+        public string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "Địa chỉ là bắt buộc")]
+        public string Address { get; set; }
     }
 }
 
