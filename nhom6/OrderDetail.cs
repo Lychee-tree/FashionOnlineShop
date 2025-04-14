@@ -18,7 +18,7 @@ namespace nhom6
         public int PvID { get; set; }
         public Nullable<int> Quantity { get; set; }
         public Nullable<int> TotalUnitprice { get; set; }
-    
+        public virtual Product Product { get; set; }  // Thêm navigation property cho Product
         public virtual Instock Instock { get; set; }
         public virtual Order Order { get; set; }
     }

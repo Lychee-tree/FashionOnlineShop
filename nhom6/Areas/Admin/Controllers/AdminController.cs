@@ -158,9 +158,11 @@ namespace nhom6.Areas.Admin.Controllers
         public ActionResult ListOrder()
         {
             var orders = db.Orders
+                .Where(o => o.ShippingStatusID == 3)
                 .Include(o => o.Customer)
                 .Include(o => o.PaidStatu)
                 .ToList(); // Load danh sách đơn hàng kèm thông tin liên quan
+
             return View(orders);
         }
 
@@ -205,21 +207,87 @@ namespace nhom6.Areas.Admin.Controllers
                 .Where(o => o.ShippingStatusID == 4)
                 .Include(o => o.Customer)
                 .Include(o => o.PaidStatu)
+                .Include(o => o.Shipping_Status)
                 .ToList();
+
+            // Lấy tất cả trạng thái thanh toán từ database
+            ViewBag.ShippingStatusList = db.Shipping_Status.ToList(); // Gán danh sách trạng thái
+            ViewBag.PaidStatusList = db.PaidStatus.ToList();
             return View(acceptedOrders);
         }
 
-        // Hủy đơn hàng
-        //public ActionResult Cancel(int id)
-        //{
-        //    var order = db.Orders.Find(id);
-        //    if (order != null)
-        //    {
-        //        //order.Status = "Canceled";
-        //        db.SaveChanges();
-        //    }
-        //    return RedirectToAction("Index");
-        //}
+
+        //Đã xác nhận đơn hàng GET
+
+        public ActionResult ConfirmedOrders()
+        {
+            var confirmedOrders = db.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.PaidStatu)
+                .Include(o => o.Shipping_Status)
+                .Where(o => o.ShippingStatusID == 4) // Giả sử 4 là "Đã xác nhận"
+                .ToList();
+            ViewBag.ShippingStatusList = db.Shipping_Status.ToList(); // Gán danh sách trạng thái
+            ViewBag.PaidStatusList = db.PaidStatus.ToList();
+
+            return View(confirmedOrders);
+        }
+
+
+        //Action POST của confirmed
+
+        [HttpPost]
+        public JsonResult SaveShippingCode(int id, string code)
+        {
+            try
+            {
+                var order = db.Orders.FirstOrDefault(o => o.OrderID == id);
+                if (order == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy đơn hàng." });
+                }
+
+                // Cập nhật cột ShippingCode 
+                order.ShippingCode = code;
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
+        // Action POST để cập nhật trạng thái giao hàng và hình thức thanh toán
+        [HttpPost]
+        public JsonResult UpdateOrderStatus(int orderId, int shippingStatusId, int paidStatusId)
+        {
+            try
+            {
+                Console.WriteLine($"orderId: {orderId}, shippingStatusId: {shippingStatusId}, paidStatusId: {paidStatusId}");
+                var order = db.Orders.FirstOrDefault(o => o.OrderID == orderId);
+                if (order == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy đơn hàng." });
+                }
+
+                // Cập nhật trạng thái giao hàng và hình thức thanh toán
+                order.ShippingStatusID = shippingStatusId;
+                order.PaidStatusID = paidStatusId;
+
+                db.SaveChanges();  // Lưu thay đổi vào cơ sở dữ liệu
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
         // Thêm phương thức xử lý hủy đơn hàng
         [HttpPost]
         public JsonResult Cancel(int id)
@@ -248,9 +316,62 @@ namespace nhom6.Areas.Admin.Controllers
             }
         }
 
-        // Thêm phương thức cập nhật trạng thái đơn hàng
+        //// Thêm phương thức cập nhật trạng thái đơn hàng
+        //[HttpPost]
+        //public JsonResult UpdateOrderStatus(int id, string status)
+        //{
+        //    try
+        //    {
+        //        var order = db.Orders.Find(id);
+        //        if (order == null)
+        //        {
+        //            return Json(new { success = false, message = "Không tìm thấy đơn hàng" });
+        //        }
+
+        //        // Cập nhật trạng thái thanh toán
+        //        var paidStatus = db.PaidStatus.FirstOrDefault(ps => ps.PaidStatus == status);
+        //        if (paidStatus != null)
+        //        {
+        //            order.PaidStatusID = paidStatus.PaidStatusID;
+        //            db.SaveChanges();
+        //        }
+
+        //        return Json(new { success = true });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = ex.Message });
+        //    }
+        //}
+
+
+        //Action của shipping status
         [HttpPost]
-        public JsonResult UpdateOrderStatus(int id, string status)
+        public JsonResult UpdateShippingStatus(int id, int shippingStatusId)
+        {
+            try
+            {
+                var order = db.Orders.Find(id);
+                if (order == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy đơn hàng." });
+                }
+
+                order.ShippingStatusID = shippingStatusId;
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
+        //chấp nhận đơn hàng
+        [HttpPost]
+        public JsonResult Acceptbtn(int id)
         {
             try
             {
@@ -260,20 +381,21 @@ namespace nhom6.Areas.Admin.Controllers
                     return Json(new { success = false, message = "Không tìm thấy đơn hàng" });
                 }
 
-                // Cập nhật trạng thái thanh toán
-                var paidStatus = db.PaidStatus.FirstOrDefault(ps => ps.PaidStatus == status);
-                if (paidStatus != null)
-                {
-                    order.PaidStatusID = paidStatus.PaidStatusID;
-                    db.SaveChanges();
-                }
+                order.ShippingStatusID = 4; // Đã chấp nhận
+                db.SaveChanges();
 
-                return Json(new { success = true });
+                return Json(new
+                {
+                    success = true,
+                    redirectUrl = Url.Action("AcceptedOrders", "Admin", new { area = "Admin" }) // nếu bạn đang ở trong Areas/Admin
+                });
+
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
     }
 }

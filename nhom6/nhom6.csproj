@@ -2116,6 +2116,8 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Admin\Views\Admin\AcceptedOrders.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\EditConfirmedOrder.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\ConfirmedOrders.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

@@ -1,0 +1,12 @@
+﻿@model IEnumerable<nhom6.Order>
+
+@{
+    ViewBag.Title = "Đơn hàng đã chấp nhận";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+
+    // LẤY DANH SÁCH TRẠNG THÁI TỪ ViewBag
+    var shippingList = ViewBag.ShippingStatusList as List<nhom6.Shipping_Status>;
+    var statusList = ViewBag.PaidStatusList as List<nhom6.PaidStatu>;
+}
+
+<h2>Danh sách đơn hàng đã xác nhận</h2>

@@ -30,6 +30,8 @@ namespace nhom6
         public Nullable<int> EmployeeID { get; set; }
         public string ShippingCode { get; set; }
         public string Note { get; set; }
+        public string TrackingCode { get; set; }
+
         public Nullable<System.DateTime> OrderDate { get; set; }
     
         public virtual Customer Customer { get; set; }

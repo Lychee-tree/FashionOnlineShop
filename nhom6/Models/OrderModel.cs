@@ -20,6 +20,9 @@ namespace nhom6.Models
         public int EmployeeID { get; set; }
         public string ShippingCode { get; set; }
         public string Note { get; set; }
+
+        public string TrackingCode { get; set; } // Nếu chưa có, thêm vào model
+
         public DateTime? OrderDate { get; set; }
 
         // Thêm thuộc tính này để hiển thị trạng thái đơn hàng
