@@ -1,0 +1,90 @@
+﻿@model List<nhom6.Models.CartItemModel>
+
+@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shopping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="product__cart__item">
+                                        <div class="product__cart__item__pic">
+                                            <img src="@Url.Content("~/Content/Image/" + item.ProductImage)" alt="" style="width: 100px;">
+                                        </div>
+                                        <div class="product__cart__item__text">
+                                            <h6>@item.ProductName</h6>
+                                            <h5 class="unit-price">@item.UnitPrice</h5>
+                                        </div>
+                                    </td>
+                                    <td class="quantity__item">
+                                        <div class="quantity">
+                                            <div class="pro-qty-2">
+                                                <input type="text" value="@item.Quantity">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price unit-price">@item.TotalUnitPrice</td>
+                                    <td class="cart__close"><i class="fa fa-close" data-pv-id="@item.pvID" data-order-id="@item.orderID"></i></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn">
+                            <a href="@Url.Action("Shop", "Product")">Continue Shopping</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart__total">
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>Total<span class="unit-price" id="total-price">@ViewBag.TotalPrice</span></li>
+                    </ul>
+                    <a href="#" class="primary-btn" id="proceed-to-checkout" data-order-id="@ViewBag.OrderID">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Toast thông báo -->
+    <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+        <!-- Vị trí của toast: góc trên bên phải -->
+        <div id="cart-toast" class="toast toast-lg" style="position: fixed; top: 100px; right: 100px; z-index: 9999;" data-delay="10000">
+            <div id="toast-header" class="toast-header">
+                <strong id="toast-title" class="mr-auto">Thông báo</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+            </div>
+            <div id="toast-body" class="toast-body">
+                Sản phẩm đã được thêm vào giỏ hàng thành công!
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            formatPrices();
+        });
+    </script>
+    <script src="@Url.Content("~/Frontend/js/updateCart.js")"></script>
+
+}

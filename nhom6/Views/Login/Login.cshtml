@@ -1,0 +1,157 @@
+﻿@model nhom6.Models.LoginModel
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="popupMessage" class="popup-overlay">
+        <div class="popup-box">
+            <h4>@TempData["SuccessMessage"]</h4>
+        </div>
+    </div>
+
+    <script>
+    // Tự động ẩn sau 3s hoặc khi bấm nút
+        setTimeout(function () {
+            document.getElementById("popupMessage").style.display = "none";
+        }, 3000);
+        document.getElementById("closePopup").onclick = function () {
+            document.getElementById("popupMessage").style.display = "none";
+        };</script>
+}
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- CSS giống giao diện Đăng ký -->
+<style>
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .popup-box {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        animation: fadeIn 0.4s ease;
+        max-width: 400px;
+        width: 90%;
+    }
+
+        .popup-box h5 {
+            margin-bottom: 20px;
+            color: black;
+            font-weight: bold;
+        }
+
+    .btn-custom-close {
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+        .btn-custom-close:hover {
+            background-color: #5a6268;
+        }
+
+    .login-popup {
+        max-width: 500px;
+        margin: 80px auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    body {
+        background: linear-gradient(to right, #e0eafc, #cfdef3);
+        min-height: 100vh;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: bold;
+    }
+
+    .btn-submit {
+        width: 100%;
+        background-color: #6c757d;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 10px;
+        transition: background 0.3s ease;
+    }
+
+        .btn-submit:hover {
+            background-color: #5a6268;
+        }
+
+    label {
+        font-weight: bold;
+    }
+</style>
+
+<div class="login-popup">
+    <h2>Đăng nhập</h2>
+
+
+    @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.userName, "Tên người dùng", htmlAttributes: new { @class = "fw-bold" })
+            @Html.TextBoxFor(m => m.userName, new { @class = "form-control", placeholder = "Nhập tên người dùng" })
+            @Html.ValidationMessageFor(m => m.userName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.userPass, "Mật khẩu", htmlAttributes: new { @class = "fw-bold" })
+            @Html.PasswordFor(m => m.userPass, new { @class = "form-control", placeholder = "Mật khẩu" })
+            @Html.ValidationMessageFor(m => m.userPass, "", new { @class = "text-danger" })
+        </div>
+
+        if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Count > 0)
+        {
+            <div class="text-danger text-center mb-2">
+                @ViewData.ModelState[""].Errors[0].ErrorMessage
+            </div>
+        }
+
+
+        <button type="submit" class="btn btn-submit mt-3">Đăng nhập</button>
+
+        <div class="text-center mt-3">
+            <span>Chưa có tài khoản? </span>
+            <a href="@Url.Action("Register", "Login")"
+               style="color: gray; text-decoration: none;"
+               onmouseover="this.style.color='black'; "
+               onmouseout="this.style.color='gray'; this.style.textDecoration='none'">
+                Đăng ký ngay
+            </a>
+        </div>
+    }
+</div>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

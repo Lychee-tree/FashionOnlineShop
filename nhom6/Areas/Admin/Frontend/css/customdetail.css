@@ -1,0 +1,128 @@
+﻿﻿/* Định dạng chung */
+body {
+    background-color: #f5f5f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+.site-header {
+    background-color: #000;
+    padding: 20px;
+    text-align: center;
+}
+
+    .site-header .logo img {
+        height: 50px;
+        filter: brightness(0) invert(1);
+    }
+
+/* Bố cục sản phẩm */
+.shop-details .container {
+    max-width: 1200px;
+    margin: 50px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.product-layout {
+    display: flex;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Ảnh sản phẩm */
+.product-image img {
+    width: 400px;
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+    .product-image img:hover {
+        transform: scale(1.05);
+    }
+
+/* Thông tin sản phẩm */
+.product-info {
+    margin-left: 40px;
+}
+
+    .product-info h1 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #222;
+        margin-bottom: 15px;
+    }
+
+.product-price {
+    font-size: 22px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 15px;
+}
+
+    .product-price span {
+        color: #f39c12;
+    }
+
+.product-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Nút Mua ngay */
+.buy-button {
+    display: inline-block;
+    background: #000;
+    color: #fff;
+    font-size: 16px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .buy-button:hover {
+        background: #f39c12;
+        color: #fff;
+    }
+
+.logo img {
+    height: 50px; /* Điều chỉnh kích thước theo mong muốn */
+}
+
+.instock-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+    .instock-table th, .instock-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .instock-table th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+    }
+
+    .instock-table td {
+        background-color: #fff;
+    }
+
+    .instock-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .instock-table tr:hover {
+        background-color: #f1f1f1;
+    }

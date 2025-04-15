@@ -1,53 +1,58 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
 
-    function addToCart(productId) {
+    function addToCart(productID, sizeID, colorID, quantity) {
         $.ajax({
-            url: '/Cart/AddToCart',
+            url: '/AddToCart/AddToCart',
             type: 'POST',
             data: {
-                productId: productId,
-                quantity: 1
+                product: productID,
+                size: sizeID,
+                color: colorID,
+                quantity: quantity
             },
-            success: function (response) {
-                if (response.requiresLogin) {
-                    window.location.href = '/Account/Login?returnUrl=' + window.location.pathname;
-                } else if (response.success) {
-                    alert("Đã thêm vào giỏ hàng");
-                    // Hoặc cập nhật số lượng trên icon giỏ hàng
-                    loadCartCount();
+            success: function (res) {
+                if (res.success) {
+                    document.getElementById("cart-count").textContent = res.cartCount;
+
+                    // Hiển thị toast
+                    showToast("Đã thêm vào giỏ hàng!", "success");
+
+                    // Ẩn thông báo lỗi nếu có
+                    document.getElementById("error-message").style.display = "none";
                 } else {
-                    alert("Thêm thất bại");
+                    document.getElementById("error-message").innerText = res.message;
+                    document.getElementById("error-message").style.display = "block";
                 }
             },
             error: function () {
-                alert("Lỗi kết nối server");
+                alert("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
             }
         });
     }
 
     window.addToCartBtn = function () {
 
-        document.querySelectorAll(".add-cart").forEach(cartBtn => {
-            cartBtn.addEventListener("click", function (e) {
-                e.preventDefault();
+        fetch('/Login/CheckLogin', {
+            method: 'POST'
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.isLoggedIn) {
+                    const selectedProductID = document.querySelector('#add-to-cart-btn').getAttribute("data-product-id")
+                    const selectedSizeID = document.querySelector('input[name="size"]:checked')?.value;
+                    const selectedColorID = document.querySelector('input[name="color"]:checked')?.value;
+                    const selectedQuantity = parseInt(document.getElementById("quantity-input").value);
 
-                fetch('/Login/CheckLogin', {
-                    method: 'POST'
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.isLoggedIn) {
-                        }
-                        else {
-                            $('#loginRequiredModal').modal('show'); //do sử dụng Bootstrap 4.41 đây là hàm gọi modal 
-                        }
-                    });
-                console.log("addToCart đã được gọi");
+                    addToCart(selectedProductID, selectedSizeID, selectedColorID, selectedQuantity);
+                }
+                else {
+                    $('#loginRequiredModal').modal('show'); //do sử dụng Bootstrap 4.41 đây là hàm gọi modal 
+                }
             });
-        });
+        console.log("addToCart đã được gọi");
     }
     // Khi người dùng bấm đăng nhập
     document.getElementById("goToLoginBtn").addEventListener("click", function () {
-        window.location.href = "/Account/Login"; //chuyển hướng đến trang login do Tuyền làm
+        window.location.href = "/Login/Login"; //chuyển hướng đến trang login do Tuyền làm
     });
 });

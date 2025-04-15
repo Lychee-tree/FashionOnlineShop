@@ -1,0 +1,50 @@
+﻿@model IEnumerable<nhom6.Order>
+
+@{
+    ViewBag.Title = "OrderList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-3" style="padding: 30px;">
+    @foreach (var item in Model)
+    {
+        <div class="border rounded p-3 mx-auto" style="max-width: 1000px; border: 2px solid #333; ">
+            <div class="row">
+                <!-- Cột trái -->
+                <div class="col-md-5">
+                    <h6 class="font-weight-bold mb-2">Thông tin giao hàng</h6>
+                    <p class="mb-1"><strong>Họ tên:</strong> @item.Customer.CustomerName</p>
+                    <p class="mb-1"><strong>Địa chỉ:</strong> @item.Customer.Address</p>
+                    <p class="mb-1"><strong>SĐT:</strong> @item.Customer.PhoneNumber</p>
+                    <hr class="my-2">
+                    <p class="mb-1"><strong>Trạng thái giao hàng:</strong> <span class="badge badge-warning">@item.Shipping_Status.ShippingStatus</span></p>
+                    <p class="mb-1"><strong>Thanh toán:</strong> <span class="badge badge-success">@item.PaidStatu.PaidStatus</span></p>
+                </div>
+
+                <!-- Cột phải -->
+                <div class="col-md-7">
+                    <h6 class="font-weight-bold mb-2">Danh sách sản phẩm</h6>
+                    <ul class="list-group small mb-2">
+                        @foreach (var i in item.OrderDetails)
+                        {
+                            <li class="list-group-item py-2 px-2">
+                                <strong>@i.Instock.Product.ProductName</strong><br>
+                                Màu: @i.Instock.Color.ColorName | Size: @i.Instock.Size.SizeName | SL: @i.Quantity<br>
+                                Tổng: <span class="text-muted unit-price">@i.TotalUnitprice</span>
+                            </li>
+                        }
+                    </ul>
+                    <p class="text-right font-weight-bold mb-0">Tổng tiền: <span class="text-danger unit-price">@item.TotalPrice</span></p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section Scripts{
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            formatPrices();
+        });
+</script>
+}
+

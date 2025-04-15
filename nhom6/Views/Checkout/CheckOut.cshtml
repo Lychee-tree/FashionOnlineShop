@@ -1,0 +1,104 @@
+﻿@model nhom6.Models.CheckOutModel
+@{
+    ViewBag.Title = "CheckOut";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="checkout spad">
+    <div class="container">
+        <div class="checkout__form">
+            <div class="cart__discount">
+                <h6>Mã khuyến mãi</h6>
+                <form action="#">
+                    <input type="text" placeholder="Coupon code" data-discount-id="">
+                    <button type="submit" id="apply-discount-btn">Áp dụng</button>
+                </form>
+            </div>
+            <form action="#">
+                <div class="row">
+                    <div class="col-lg-8 col-md-6">
+                        <h6 class="checkout__title">Thông tin giao hàng</h6>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p> Tên Khách hàng<span>*</span></p>
+                                    <input type="text" value="@Model.CustomerName" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>Địa chỉ<span>*</span></p>
+                            <input type="text" value="@Model.Address" name="address" data-original="@Model.Address">
+                            <div id="notice1" style="font-size:13px; color:red;"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Số điện thoại nhận hàng<span>*</span></p>
+                                    <input type="text" value="@Model.Phone" data-original="@Model.Phone" name="phone-number">
+                                    <div id="notice2" style="font-size:13px; color:red;"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Email<span>*</span></p>
+                                    <input type="text" value="@Model.Email" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>Ghi chú cho đơn hàng:</p>
+                            <input type="text" name="note" value="@Model.Note" data-original="@Model.Note">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="checkout__order">
+                            <h4 class="order__title" data-order-id="@Model.OrderID">Your order</h4>
+                            <div class="checkout__order__products">Product <span>Total</span></div>
+                            <ul class="checkout__total__products">
+                                @foreach (var item in Model.OrderDetails)
+                                {
+                                    <li>
+                                        @item.ProductName <span class="unit-price">@item.TotalUnitPrice</span>
+                                        <div style="font-size: 12px; font-weight:300;">Màu sắc: @item.Color <span>Size: @item.Size</span> </div>
+                                    </li>
+                                }
+                            </ul>
+                            <ul class="checkout__total__all">
+                                <li>Total <span class="unit-price" id="total-price">@Model.TotalPrice</span></li>
+                            </ul>
+                            <p style="font-size: 14px;">
+                                Hãy kiểm tra kỹ thông tin trước khi đặt hàng! <br />
+                                Nếu có sự cố gì xảy ra xin liên hệ:<br />
+                                &bull; Hotline: <strong> (028) 7108 7108</strong><br />
+                                &bull; Email: <strong> matmatfashion@gmail.com</strong>
+                            </p>
+                            <button type="submit" class="site-btn" id="order__btn">ĐẶT HÀNG</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Toast thông báo -->
+    <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+        <!-- Vị trí của toast: góc trên bên phải -->
+        <div id="cart-toast" class="toast toast-lg" style="position: fixed; top: 100px; right: 100px; z-index: 9999;" data-delay="10000">
+            <div id="toast-header" class="toast-header">
+                <strong id="toast-title" class="mr-auto">Thông báo</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+            </div>
+            <div id="toast-body" class="toast-body">
+                Sản phẩm đã được thêm vào giỏ hàng thành công!
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            formatPrices();
+        });
+    </script>
+    <script src="@Url.Content("~/Frontend/js/checkOut.js")"></script>
+}

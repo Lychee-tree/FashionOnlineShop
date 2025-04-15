@@ -1,0 +1,68 @@
+﻿@model IEnumerable<nhom6.Order>
+
+@{
+    ViewBag.Title = "CompletedOrders";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h2 {
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
+
+    .table th,
+    .table td {
+        text-align: center;
+        vertical-align: middle;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+</style>
+<div id="content-wrapper" class="d-flex flex-column" style="padding:30px;">
+    <h2 class="text-center my-4">Đơn hàng đã xác nhận</h2>
+
+    <table class="table table-bordered text-center align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>ID đơn hàng</th>
+                <th>Tên KH</th>
+                <th>Tổng tiền</th>
+                <th>Sản phẩm</th>
+                <th>Nhân viên phụ trách</th>
+                <th>Trạng thái thanh toán</th>
+                <th>Trạng thái giao hàng</th>
+                <th>Mã vận đơn</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderID</td>
+                    <td>@order.Customer.CustomerName</td>
+                    <td>@order.TotalPrice.ToString("N0") VND</td>
+                    <td>
+                        <a href="@Url.Action("OrderDetail", "Admin", new { id = order.OrderID })" class="btn btn-dark btn-orderdetail" style="width:70%; font-size:16px;">Xem chi tiết đơn hàng</a>
+                    </td>
+                    <td>@order.Employee.EmployeeName</td>
+                    <td>@order.Shipping_Status.ShippingStatus</td>
+                    <td>@order.PaidStatu.PaidStatus</td>
+                    <td>@order.ShippingCode</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a href="@Url.Action("ListOrder")" class="btn btn-primary" style="width:30%;">Quay lại danh sách đơn hàng</a>
+</div>
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+}

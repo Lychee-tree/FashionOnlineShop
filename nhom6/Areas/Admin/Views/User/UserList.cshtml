@@ -1,0 +1,59 @@
+﻿@model IEnumerable<nhom6.Areas.Admin.Controllers.UserController.UserWithOwnerInfo>
+
+@{
+    ViewBag.Title = "UserList";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+}
+
+<div id="content-wrapper" class="d-flex flex-column" style="padding:30px;">
+    <div class="container-fluid">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách người dùng</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Tên người dùng</th>
+                                <th>Email</th>
+                                <th>Vai trò</th>
+                                <th>Tên Khách hàng/ Nhân viên</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.UserName</td>
+                                    <td>@item.UserEmail</td>
+                                    <td>
+                                        @if (item.RoleID == 0)
+                                        {
+                                            <span class="badge badge-primary">Nhân viên</span>
+                                        }
+                                        else if (item.RoleID == 1)
+                                        {
+                                            <span class="badge badge-success">Khách hàng</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.RoleID == 0)
+                                        {
+                                            <span>@item.OwnerName</span>
+                                        }
+                                        else if (item.RoleID == 1)
+                                        {
+                                            <span> @item.OwnerName</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

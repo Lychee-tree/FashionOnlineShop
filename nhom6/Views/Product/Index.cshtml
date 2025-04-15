@@ -4,5 +4,260 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- Hero Section Begin -->
+<section class="hero">
+    <div class="hero__slider owl-carousel">
+        <div class="hero__items set-bg" data-setbg="/Content/Image/banner1.png">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-7 col-md-8">
+                        <div class="hero__text">
+                            @*<h6>Summer Collection</h6>
+                                <h2>Fall - Winter Collections 2030</h2>
+                                <p>
+                                    A specialist label creating luxury essentials. Ethically crafted with an unwavering
+                                    commitment to exceptional quality.
+                                </p>*@
+                            @*<a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>*@
+                            @*<div class="hero__social">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero__items set-bg" data-setbg="/Content/Image/banner2.png">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-7 col-md-8">
+                        <div class="hero__text">
+                            @*<h6>Sản phẩm mới</h6>*@
+                            @*<h2>Fall - Winter Collections 2030</h2>
+                                <p>
+                                    A specialist label creating luxury essentials. Ethically crafted with an unwavering
+                                    commitment to exceptional quality.
+                                </p>
+                                <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                                <div class="hero__social">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+<!-- Banner Section Begin -->
+<section class="banner spad">
+    <div class="container">
+        <div class="row_categories">
+            <div class="col-lg-5" style="width: 33%;">
+                <div class="banner__item">
+                    <div class="banner__item__pic">
+                        <img src="/Content/Image/banner-1.jpg" alt="" style="max-width: 90%; height: auto; object-fit: contain;">
+                    </div>
+                    <div class="banner__item__text">
+                        <h2 class="bst">SẮP</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5" style="width: 33%;">
+                <div class="banner__item">
+                    <div class="banner__item__pic">
+                        <img src="/Content/Image/banner-2.jpg" alt="" style="max-width: 100%; height: auto; object-fit: contain;">
+                    </div>
+                    <div class="banner__item__text">
+                        <h2 class="bst">RA</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5" style="width: 33%;">
+                <div class="banner__item">
+                    <div class="banner__item__pic">
+                        <img src="/Content/Image/banner-3.jpg" alt="" style="max-width: 99%; height: auto; object-fit: contain;">
+                    </div>
+                    <div class="banner__item__text">
+                        <h2 class="bst">MẮT</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Banner Section End -->
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="filter__controls">
+                    <li class="active" data-filter="*">Tất cả sản phẩm</li>
+                    <li data-filter=".top-products">Áo</li>
+                    <li data-filter=".bottom-products">Quần</li>
+                    <li data-filter=".outerwear-products">Áo khoác</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row product__filter">
+
+            <!-- Top Products (CategoryID = 1) -->
+            @if (ViewBag.TopProducts != null)
+            {
+                foreach (var productItem in ViewBag.TopProducts)
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-6 mix top-products ">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                 data-setbg="@Url.Content("~/Content/Image/" + productItem.UnitImage)"
+                                 id="product-image-@productItem.ProductID"
+                                 style="background-image: url('@Url.Content("~/Content/Image/" + productItem.UnitImage)')">
+                            </div>
+                            <div class="product__item__text">
+                                <h6>@productItem.ProductName</h6>
+                                <a href="ProductDetails/@productItem.ProductID" class="add-cart">Xem chi tiết</a>
+                                <h5 class="unit-price">@productItem.UnitPrice</h5>
+                                <div class="product__color__select">
+                                    @if (productItem.Colors != null && productItem.Colors.Count > 0)
+                                    {
+                                        for (int i = 0; i < productItem.Colors.Count; i++)
+                                        {
+                                            var color = productItem.Colors[i];
+                                            <label style="background-color: @color.ColorCode">
+
+                                            </label>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>No colors available</span>
+                                    }
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <!-- Bottom Products (CategoryID = 2) -->
+            @if (ViewBag.BottomProducts != null)
+            {
+                foreach (var productItem in ViewBag.BottomProducts)
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-6 mix bottom-products ">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                 data-setbg="@Url.Content("~/Content/Image/" + productItem.UnitImage)"
+                                 id="product-image-@productItem.ProductID"
+                                 style="background-image: url('@Url.Content("~/Content/Image/" + productItem.UnitImage)')">
+                            </div>
+                            <div class="product__item__text">
+                                <h6>@productItem.ProductName</h6>
+                                <a href="ProductDetails/@productItem.ProductID" class="add-cart">Xem chi tiết</a>
+                                <h5 unit-price>@productItem.UnitPrice</h5>
+                                <div class="product__color__select">
+                                    @if (productItem.Colors != null && productItem.Colors.Count > 0)
+                                    {
+                                        for (int i = 0; i < productItem.Colors.Count; i++)
+                                        {
+                                            var color = productItem.Colors[i];
+                                            <label style="background-color: @color.ColorCode">
+
+                                            </label>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>No colors available</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <!-- Outerwear Products (CategoryID = 3) -->
+            @if (ViewBag.TopProducts != null)
+            {
+                foreach (var productItem in ViewBag.OuterwearProducts)
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-6 mix outerwear-products ">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                 data-setbg="@Url.Content("~/Content/Image/" + productItem.UnitImage)"
+                                 id="product-image-@productItem.ProductID"
+                                 style="background-image: url('@Url.Content("~/Content/Image/" + productItem.UnitImage)')">
+                            </div>
+                            <div class="product__item__text">
+                                <h6>@productItem.ProductName</h6>
+                                <a href="ProductDetails/@productItem.ProductID" class="add-cart">Xem chi tiết</a>
+                                <h5 class="unit-price">@productItem.UnitPrice</h5>
+                                <div class="product__color__select">
+                                    @if (productItem.Colors != null && productItem.Colors.Count > 0)
+                                    {
+                                        for (int i = 0; i < productItem.Colors.Count; i++)
+                                        {
+                                            var color = productItem.Colors[i];
+                                            <label style="background-color: @color.ColorCode">
+
+                                            </label>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>No colors available</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="col-12 text-center mt-4">
+            <a class="primary-btn load-more" href="/Product/Shop">Xem thêm</a>
+        </div>
+    </div>
+    <!-- Modal báo yêu cầu đăng nhập bằng bootstrap -->
+    <div class="modal fade" id="loginRequiredModal" tabindex="-1" role="dialog" aria-labelledby="loginRequiredModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content rounded-3">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginRequiredModalLabel">Yêu cầu đăng nhập</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Vui lòng đăng nhập để tiếp tục mua hàng. Bạn muốn đăng nhập chứ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Để sau</button>
+                    <button type="button" class="btn btn-primary" id="goToLoginBtn">Đăng nhập</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            formatPrices();
+        });
+    </script>
+}

@@ -30,7 +30,7 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <div>
-                    @RenderBody();
+                    @RenderBody()
                 </div>
                 @RenderPage("footer.cshtml")
             </div>
@@ -43,23 +43,25 @@
         <!--Log out modal-->
         @RenderPage("logoutModal.cshtml")
     </div>
-        <!-- Bootstrap core JavaScript-->
-        <script src="@Url.Content("~/Areas/Admin/Frontend/vendor/jquery/jquery.min.js")"></script>
-        <script src="@Url.Content("~/Areas/Admin/Frontend/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="@Url.Content("~/Areas/Admin/Frontend/vendor/jquery/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Areas/Admin/Frontend/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
 
-        <!-- Core plugin JavaScript-->
-        <script src="@Url.Content("~/Areas/Admin/Frontend/vendor/jquery-easing/jquery.easing.min.js")"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="@Url.Content("~/Areas/Admin/Frontend/vendor/jquery-easing/jquery.easing.min.js")"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="@Url.Content("~/Areas/Admin/Frontend/js/sb-admin-2.min.js")"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="@Url.Content("~/Areas/Admin/Frontend/js/sb-admin-2.min.js")"></script>
 
-        <!-- Page level plugins -->
-        <script src="@Url.Content("~/Areas/Admin/Frontend/vendor/chart.js/Chart.min.js")"></script>
 
-        <!-- Page level custom scripts -->
-        <script src="@Url.Content("~/Areas/Admin/Frontend/js/demo/chart-area-demo.js")"></script>
-        <script src="@Url.Content("~/Areas/Admin/Frontend/js/demo/chart-pie-demo.js")"></script>
+    <!-- Page level plugins -->
+    <script src="@Url.Content("~/Areas/Admin/Frontend/vendor/chart.js/Chart.min.js")"></script>
 
+    <!-- Page level custom scripts -->
+    <script src="@Url.Content("~/Areas/Admin/Frontend/js/demo/chart-area-demo.js")"></script>
+    <script src="@Url.Content("~/Areas/Admin/Frontend/js/demo/chart-pie-demo.js")"></script>
+
+    @RenderSection("Scripts", required: false)
 
 </body>
 </html>

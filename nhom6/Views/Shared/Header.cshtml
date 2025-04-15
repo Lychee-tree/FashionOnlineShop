@@ -8,21 +8,10 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-5">
-                    <div class="header__top__right">
-                        <div class="header__top__hover">
-                            <span><i class="fa fa-user"></i></span>
-                            <ul>
-                                <li><a href="#">Log in</a></li>
-                                <li><a href="#">Sign in</a></li>
-                            </ul>
-                        </div>
-                        <div class="header__top__hover">
-                            <span>Usd <i class="arrow_carrot-down"></i></span>
-                            <ul>
-                                <li>USD</li>
-                                <li>VND</li>
-                            </ul>
-                        </div>
+                    <!--Đoạn này sửa để thêm Đăng xuất, Admin site-->
+                    <div class="header__top__right d-flex justify-content-end align-items-center">
+                        @Html.Partial("_Login")
+                        <!---->
                     </div>
                 </div>
             </div>
@@ -32,7 +21,7 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="./index.html"><img src="~/Content/Image/logoweb.jpg"/></a>
+                    <a href="@Url.Action("Index", "Product")"><img src="~/Content/Image/logoweb.jpg"/></a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
@@ -51,16 +40,16 @@
         </ul>
     </li>-->
                         <!--<li><a href="./blog.html">Blog</a></li>-->
-                        <li><a href="./contact.html">Contacts</a></li>
+                        <li><a href="@Url.Action("Contact", "Product")">Contacts</a></li>
+                        <li><a href="@Url.Action("OrderList", "Order")">Your Orders</a></li>
                     </ul>
                 </nav>
             </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
-                    <a href="#" class="search-switch"><i class="fa fa-search" style="color: grey;"></i></a>
-                    <a href="#"><i class="fa fa-heart-o" style="color: grey;"></i></a>
-                    <a href="#"><i class="fa fa-shopping-bag" style="color: grey;"></i> <span>0</span></a>
-                    <div class="price">0</div>
+                    <!--<a href="#" class="search-switch"><i class="fa fa-search" style="color: grey;"></i></a>
+                    <a href="#"><i class="fa fa-heart-o" style="color: grey;"></i></a>-->
+                    <a href="/AddToCart/Cart" id="cart"><i class="fa fa-shopping-bag" style="color: grey;"></i> <span id="cart-count">0</span></a>
                 </div>
             </div>
         </div>

@@ -5,18 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+<style>
+    .active-filter {
+        color: #000 !important;
+        font-weight: bold;
+    }
+</style>
 <section class="shop spad">
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
-                <div class="shop__sidebar">
-                    <div class="shop__sidebar__search">
-                        <form action="#">
-                            <input type="text" placeholder="Search...">
-                            <button type="submit"><span class="icon_search"></span></button>
-                        </form>
-                    </div>
+                <div class="shop__sidebar" style="position: sticky; top: 0;">
                     <div class="shop__sidebar__accordion">
                         <div class="accordion" id="accordionExample">
                             <div class="card">
@@ -27,7 +26,7 @@
                                     <div class="card-body">
                                         <div class="shop__sidebar__categories">
                                             <ul class="nice-scroll">
-                                                <li><a href="#" class="category-link" data-id="0">Tất cả <span>(@Model.Count())</span></a></li>
+                                                <li><a href="#" class="category-link active-filter" data-id="0">Tất cả <span>(@Model.Count())</span></a></li>
                                                 @foreach (var category in ViewBag.Categories as List<nhom6.Models.CountModel>)
                                                 {
                                                     <li><a href="#" class="category-link" data-id="@category.CategoryID">@category.CategoryName (@category.ProductCount)</a></li>
@@ -45,7 +44,7 @@
                                     <div class="card-body">
                                         <div class="shop__sidebar__price">
                                             <ul>
-                                                <li><a href="#" class="price-link" data-id="0">Tất cả</a></li>
+                                                <li><a href="#" class="price-link active-filter" data-id="0">Tất cả</a></li>
                                                 <li><a href="#" class="price-link" data-id="1">Dưới 500.000 VND</a></li>
                                                 <li><a href="#" class="price-link" data-id="2">500.000 VND - 1.000.000 VND</a></li>
                                                 <li><a href="#" class="price-link" data-id="3">Trên 1.000.000 VND</a></li>
@@ -67,7 +66,7 @@
                                             </label>
                                             @foreach (var size in ViewBag.Sizes)
                                             {
-                                                <label for="@size.SizeID">
+                                                <label for="s-@size.SizeID">
                                                     @size.SizeName
                                                     <input type="radio" id="s-@size.SizeID" name="sizeFilter" value="@size.SizeID">
                                                 </label>
@@ -117,29 +116,24 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row" id="product-list">
                     @foreach (var item in Model)
                     {
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="@Url.Content("~/Content/Image/" + item.UnitImage)">
-                                    <ul class="product__hover">
-                                        <li><a href="#"><i class="fa fa-heart-o" style="color:black;"></i></a></li>
-                                        <li>
-                                            <a href="#"><i class="fa fa-arrows-h" style="color:black;"></i> <span>Compare</span></a>
-                                        </li>
-                                        <li><a href="#"><i class="fa fa-search" style="color:black;"></i></a></li>
-                                    </ul>
                                 </div>
+                                <img src="@Url.Content("~/Content/Image/" + item.UnitImage)" />
                                 <div class="product__item__text">
                                     <h6>@item.ProductName</h6>
-                                    <a href="#" class="add-cart" data-id="@item.ProductID">+ Add To Cart</a>
+                                    <a href="/Product/ProductDetails/@item.ProductID" class="add-cart">Xem chi tiết</a>
                                     <h5 class="unit-price">@item.UnitPrice</h5>
                                 </div>
                             </div>
                         </div>}
                 </div>
-                
+
             </div>
         </div>
         <!-- Modal báo yêu cầu đăng nhập bằng bootstrap -->
@@ -162,10 +156,30 @@
                 </div>
             </div>
         </div>
-        
     </div>
 </section>
 <@section Scripts {
     <script src="@Url.Content("~/Frontend/js/filter.js")"></script>
-    <script src="@Url.Content("~/Frontend/js/addToCart.js")"></script>
+    <script>
+            $(document).ready(function () {
+                // Xử lý khi click vào filter theo loại sản phẩm
+                $('.category-link').on('click', function (e) {
+                    e.preventDefault();
+                    $('.category-link').removeClass('active-filter');
+                    $(this).addClass('active-filter');
+
+                    // TODO: Gọi hàm lọc sản phẩm ở đây nếu cần
+                });
+
+                // Xử lý khi click vào filter theo giá
+                $('.price-link').on('click', function (e) {
+                    e.preventDefault();
+                    $('.price-link').removeClass('active-filter');
+                    $(this).addClass('active-filter');
+
+                    // TODO: Gọi hàm lọc sản phẩm ở đây nếu cần
+                });
+            });
+
+    </script>
 }

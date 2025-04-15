@@ -1,0 +1,117 @@
+﻿@model nhom6.Product
+
+@{
+    ViewBag.Title = "AddProduct";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+}
+
+<link href="@Url.Content("~/Areas/Admin/Frontend/css/addproduct.css")" rel="stylesheet" />
+
+<section class="edit-product">
+    <div class="container">
+        <div class="form-container">
+            @using (Html.BeginForm("AddProduct", "ProductAdmin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <h2>Thêm sản phẩm mới</h2>
+
+                <!-- Tên sản phẩm -->
+                <div class="input-group">
+                    <label>Tên sản phẩm</label>
+                    <input type="text" name="ProductName" class="form-control" required />
+                </div>
+
+                <!-- Danh mục -->
+                <div class="input-group">
+                    <label>Danh mục</label>
+                    <select name="CategoryID" class="form-control">
+                        <option value="1">Top</option>
+                        <option value="2">Bottom</option>
+                        <option value="3">Outerwear</option>
+                    </select>
+                </div>
+
+                <!-- Giá -->
+                <div class="input-group">
+                    <label>Giá</label>
+                    <input type="number" name="UnitPrice" class="form-control" required />
+                </div>
+
+                <!-- Mô tả -->
+                <div class="input-group">
+                    <label>Mô tả sản phẩm</label>
+                    <textarea name="UnitDescription" class="form-control" rows="3"></textarea>
+                </div>
+
+                <!-- Ảnh chính -->
+                <div class="input-group">
+                    <label>Ảnh đại diện</label>
+                    <input type="file" name="uploadImage" class="form-control" accept="image/*" required />
+                </div>
+
+                <!-- Ảnh phụ -->
+                <div class="input-group">
+                    <label>Ảnh phụ (chọn 3 ảnh)</label>
+                    <input type="file" name="subImages" multiple class="form-control" accept="image/*" required />
+                </div>
+
+                <!-- Biến thể: Màu - Size - Tồn kho -->
+                <div class="input-group">
+                    <label><b>Mẫu mã sản phẩm</b></label>
+                    <div id="variant-container">
+                        <div class="variant-row">
+                            <select name="ColorID_0" class="form-control" required>
+                                @foreach (var color in ViewBag.Colors)
+                                {
+                                    <option value="@color.ColorID">@color.ColorName</option>
+                                }
+                            </select>
+                            <br />
+                            <select name="SizeID_0" class="form-control" required>
+                                @foreach (var size in ViewBag.Sizes)
+                                {
+                                    <option value="@size.SizeID">@size.SizeName</option>
+                                }
+                            </select>
+                            <br />
+                            <input type="number" name="Instock_0" class="form-control" placeholder="Tồn kho" min="0" required />
+                        </div>
+                    </div>
+
+                </div>
+                <button type="button" class="btn btn-secondary mt-2" id="add-variant-btn">+ Thêm mẫu mã</button>
+                <!-- Nút submit -->
+                <div class="button-group mt-4">
+                    <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        let index = 1;
+        document.getElementById("add-variant-btn").addEventListener("click", function () {
+            const container = document.getElementById("variant-container");
+            const row = document.createElement("div");
+            row.classList.add("variant-row");
+            row.innerHTML = `
+                <br/>
+                <h6>Mẫu ${index +1} </h6>
+                <br/>
+                <select name="ColorID_${index}" class="form-control" required>
+                    ${document.querySelector('select[name="ColorID_0"]').innerHTML}
+                </select>
+                <br/>
+                <select name="SizeID_${index}" class="form-control" required>
+                    ${document.querySelector('select[name="SizeID_0"]').innerHTML}
+                </select>
+                <br/>
+                <input type="number" name="Instock_${index}" class="form-control" placeholder="Tồn kho" min="0" required />
+            `;
+            container.appendChild(row);
+            index++;
+        });
+    </script>
+}

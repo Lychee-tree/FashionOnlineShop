@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "AddColorImages";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <h3 class="mb-4 text-center">Thêm ảnh màu cho sản phẩm: <strong>@ViewBag.ProductName</strong></h3>
+
+    @using (Html.BeginForm("AddColorImage", "ProductAdmin", FormMethod.Post, new { enctype = "multipart/form-data", @class = "needs-validation", novalidate = "novalidate" }))
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover bg-white shadow-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Tên màu</th>
+                        <th>Ảnh hiện tại</th>
+                        <th>Ảnh mới (upload)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in ViewBag.ColorList)
+                    {
+                        <tr>
+                            <td>
+                                @i.Color.ColorName
+                                <input type="hidden" name="ColorID_@i.ColorID" value="@i.ColorID" />
+                            </td>
+                            <td class="text-center">
+                                @if (!string.IsNullOrEmpty(@i.Image))
+                                {
+                                    <img src="@Url.Content("~/Content/Image/" + @i.Image)" class="img-thumbnail" style="width: 80px;" />
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Chưa có ảnh</span>
+                                }
+                            </td>
+                            <td>
+                                <input type="file" name="colorImages" class="form-control-file" accept="image/*" />
+                            </td>
+                        </tr>
+                    }
+                    <!-- Chuyển dòng này ra ngoài foreach -->
+                    <input type="hidden" name="ProductID" value="@ViewBag.ProductID" />
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary btn-lg px-4">Lưu ảnh màu</button>
+            <a href="@Url.Action("list_Product", "ProductAdmin")" class="btn btn-secondary btn-lg ml-3"> Quay lại danh sách</a>
+        </div>
+    }
+</div>

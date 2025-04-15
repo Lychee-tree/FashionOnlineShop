@@ -1,0 +1,51 @@
+﻿@model IEnumerable<nhom6.Discount>
+
+@{
+    ViewBag.Title = "DiscountList";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+}
+
+<div id="content-wrapper" class="d-flex flex-column" style="padding:30px;">
+    <div class="container-fluid">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Discount Management</h6>
+                <a href="@Url.Action("CreateDiscount")" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Thêm mã Discount
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Discount Code</th>
+                                <th>Giá trị (%)</th>
+                                <th>Ngày hiệu lực</th>
+                                <th>Ngày hết hạn</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.DiscountCode</td>
+                                    <td>@item.DiscountValue</td>
+                                    <td>@item.ValidityDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@item.ExpiryDate.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        <a href="@Url.Action("EditDiscount", new { id = item.DiscountID })"
+                                           class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i> Chỉnh sửa
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

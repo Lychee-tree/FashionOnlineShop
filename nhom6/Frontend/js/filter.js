@@ -50,6 +50,7 @@
         // Thực hiện logic sắp xếp sản phẩm
         filterProducts(selectedSort);
     });
+    console.log("SizeID:", selectedSize);
     function filterProducts() {
         fetch(`/Product/FilterProducts?categoryId=${selectedCategory}&price=${selectedPriceRange}&color=${selectedColor}&size=${selectedSize}&sort=${selectedSort}`)
             .then(response => response.json())
@@ -66,15 +67,10 @@
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
                             <div class="product__item__pic set-bg" data-setbg="/Content/Image/${product.ImagePath}">
-                                <ul class="product__hover">
-                                    <li><a href="#"><i class="fa fa-heart-o" style="color:black;"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-arrows-h" style="color:black;"></i> <span>Compare</span></a></li>
-                                    <li><a href="#"><i class="fa fa-search" style="color:black;"></i></a></li>
-                                </ul>   
                             </div>
                             <div class="product__item__text">
                                 <h6 >${product.ProductName}</h6>
-                                <a href="#" class="add-cart" data-id="${product.ProductID}">+ Add To Cart</a>
+                                <a href="/Product/ProductDetails/${product.ProductID}" class="add-cart">Xem chi tiết</a>
                                 <h5 class="unit-price">${product.UnitPrice}</h5>
                             </div>
                         </div>
@@ -83,7 +79,10 @@
                 });
                 console.log("Đã in hết các phần tử")
                 formatPrices();
-                addToCartBtn();
+                //addToCartBtn();
+                requestAnimationFrame(() => {
+                    applyBackgroundImages();
+                });
             })
             .catch(error => console.error("Lỗi:", error));
     }

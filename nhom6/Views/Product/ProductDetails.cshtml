@@ -1,0 +1,383 @@
+﻿@model nhom6.Product
+
+@{
+    ViewBag.Title = "ProductDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-lg-12">
+    <div class="product__details__breadcrumb">
+        <a href="./index.html">Home</a>
+        <a href="./shop.html">Shop</a>
+        <span>Product Details</span>
+    </div>
+</div>
+<section class="shop-details">
+    <div class="product__details__pic">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <ul class="nav nav-tabs" role="tablist" id="color-thumbnails">
+                        <!-- Ảnh đầu tiên lấy từ ColorImage -->
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">
+                                <div class="product__thumb__pic set-bg" data-setbg="@Url.Content("~/Content/Image/" + ViewBag.FirstColorImage)"></div>
+                            </a>
+                        </li>
+                        <!-- Hai ảnh còn lại lấy từ ProductImage -->
+                        @{
+                            var productImages = ViewBag.ProductImages as List<nhom6.ProductImage>;
+                            if (productImages != null && productImages.Any())
+                            {
+                                for (int i = 0; i < productImages.Count && i < 2; i++)
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#tabs-@(i + 2)" role="tab">
+                                            <div class="product__thumb__pic set-bg" data-setbg="@Url.Content("~/Content/Image/" + productImages[i].Image)"></div>
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="col-lg-6 col-md-9">
+                    <div class="tab-content" id="color-images">
+                        <!-- Ảnh đầu tiên lấy từ ColorImage -->
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__pic__item">
+                                <img src="@Url.Content("~/Content/Image/" + ViewBag.FirstColorImage)" alt="">
+                            </div>
+                        </div>
+                        <!-- Hai ảnh còn lại lấy từ ProductImage -->
+                        @{
+                            if (productImages != null && productImages.Any())
+                            {
+                                for (int i = 0; i < productImages.Count && i < 2; i++)
+                                {
+                                    <div class="tab-pane" id="tabs-@(i + 2)" role="tabpanel">
+                                        <div class="product__details__pic__item">
+                                            <img src="@Url.Content("~/Content/Image/" + productImages[i].Image)" alt="">
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="product__details__content">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-8">
+                    <div class="product__details__text">
+                        <h4>@Model.ProductName</h4>
+                        <h3 class="unit-price">@Model.UnitPrice</h3>
+                        <div class="product__details__option__size">
+                            <span>Size:</span>
+                            @{
+                                var sizes = ViewBag.Sizes as List<nhom6.Size>;
+                                if (sizes != null && sizes.Any())
+                                {
+                                    foreach (var size in sizes)
+                                    {
+                                        <label for="@size.SizeName">
+                                            @size.SizeName
+                                            <input type="radio" id="@size.SizeName" name="size" value="@size.SizeID">
+                                        </label>
+                                    }
+                                }
+                            }
+                        </div>
+                        <div class="product__details__option__color">
+                            <span>Màu sắc:</span>
+                            @foreach (var color in ViewBag.Colors)
+                            {
+                                <label for="color-@color.ColorID" style="background-color: @color.ColorCode;" onclick="updateColorImages(@color.ColorID)">
+                                    <input type="radio" id="color-@color.ColorID" name="color" value="@color.ColorID"
+                                           data-color-id="@color.ColorID">
+                                    <span class="color-swatch"></span>
+                                </label>
+                            }
+                        </div>
+
+                        <div class="product__details__cart__option">
+                            <div class="quantity">
+                                <span>Số lượng: </span>
+                                <div class="pro-qty">
+                                    <input type="text" id="quantity-input" value="1" min="1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="#" id="add-to-cart-btn" class="primary-btn" data-product-id="@Model.ProductID">Thêm vào giỏ hàng</a>
+
+                        <!-- Hiển thị số lượng tồn kho -->
+                        <div class="product__details__stock">
+                            <span id="stock-quantity">Số lượng tồn kho: </span>
+                            <!-- Thông báo lỗi -->
+                            <div id="error-message" style="color: red; display: none;"></div>
+                        </div>
+
+
+
+                        <div class="product__details__last__option">
+                            <!--<img src="img/shop-details/details-payment.png" alt="">-->
+                            <ul>
+                                <li><span>Categories:</span> @ViewBag.CategoryName</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Toast thông báo -->
+    <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+        <!-- Vị trí của toast: góc trên bên phải -->
+        <div id="cart-toast" class="toast toast-lg" style="position: fixed; top: 100px; right: 100px; z-index: 9999;" data-delay="10000">
+            <div id="toast-header" class="toast-header">
+                <strong id="toast-title" class="mr-auto">Thông báo</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+            </div>
+            <div id="toast-body" class="toast-body">
+                Sản phẩm đã được thêm vào giỏ hàng thành công!
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="product__details__tab">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#tabs-5"
+               role="tab">Mô tả</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">
+                Bảng size
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tabs-5" role="tabpanel">
+            <div class="product__details__tab__content">
+                <p class="note">
+                    @Model.UnitDescription
+                </p>
+            </div>
+        </div>
+        <div class="tab-pane" id="tabs-6" role="tabpanel">
+            <div class="product__details__tab__content">
+                <img class="size_chart" src="@Url.Content("~/Content/Image/" + Model.Category.CategorySizeImage)" alt="Bảng size">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Related Section Begin -->
+<section class="related spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="related-title">Sản phẩm tương tự</h3>
+            </div>
+        </div>
+        <div class="row">
+            @if (ViewBag.RelatedProducts != null && ViewBag.RelatedProducts.Count > 0)
+            {
+                foreach (var relatedProduct in ViewBag.RelatedProducts)
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="@Url.Content("~/Content/Image/" + relatedProduct.UnitImage)">
+                            </div>
+                            <div class="product__item__text">
+                                <h6>@relatedProduct.ProductName</h6>
+                                <a href="/Product/ProductDetails/@relatedProduct.ProductID" class="add-cart">Xem chi tiết</a>
+                                <h5 class="unit-price">@relatedProduct.UnitPrice</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Không có sản phẩm liên quan.</p>
+            }
+        </div>
+        <!-- Modal báo yêu cầu đăng nhập bằng bootstrap -->
+        <div class="modal fade" id="loginRequiredModal" tabindex="-1" role="dialog" aria-labelledby="loginRequiredModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content rounded-3">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginRequiredModalLabel">Yêu cầu đăng nhập</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Vui lòng đăng nhập để tiếp tục mua hàng. Bạn muốn đăng nhập chứ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Để sau</button>
+                        <button type="button" class="btn btn-primary" id="goToLoginBtn">Đăng nhập</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Related Section End -->
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.set-bg').each(function () {
+                var bg = $(this).data('setbg');
+                $(this).css('background-image', 'url(' + bg + ')');
+            });
+            // Lấy ColorID đầu tiên và cập nhật ảnh
+            var firstColorId = $('input[name="color"]:first').val();
+            if (firstColorId) {
+                updateColorImages(firstColorId);
+            }
+            formatPrices();
+        });
+
+        function updateColorImages(colorId) {
+            var productId = @Model.ProductID;
+    // Gửi yêu cầu AJAX để lấy ảnh đầu tiên của ColorID được chọn
+            $.ajax({
+                url: '@Url.Action("GetColorImages", "Product")', // Đường dẫn đến action trong controller
+                type: 'GET',
+                data: {
+                    colorId: colorId,
+                    productId: productId
+                },
+                success: function (response) {
+                    if (response.length > 0) {
+                        var firstImageUrl = '@Url.Content("~/Content/Image/")' + response[0].Image;
+
+                        // Cập nhật ảnh đầu tiên trong phần thumbnails
+                        $('#color-thumbnails .nav-item:first-child .product__thumb__pic').css('background-image', 'url(' + firstImageUrl + ')');
+
+                        // Cập nhật ảnh đầu tiên trong phần tab content
+                        $('#color-images .tab-pane:first-child img').attr('src', firstImageUrl);
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra khi tải ảnh.');
+                }
+            });
+        }
+
+    // Hàm cập nhật số lượng tồn kho và trạng thái nút "Thêm vào giỏ hàng"
+        function updateStockQuantity() {
+            var selectedColorId = $('input[name="color"]:checked').val();
+            var selectedSizeId = $('input[name="size"]:checked').val();
+            var productId = @Model.ProductID;
+
+            if (selectedColorId && selectedSizeId) {
+                $.ajax({
+                    url: '@Url.Action("GetStockQuantity", "Product")',
+                    type: 'GET',
+                    data: {
+                        productId: productId,
+                        colorId: selectedColorId,
+                        sizeId: selectedSizeId
+                    },
+                    success: function (response) {
+                        var stockQuantity = response.stock;
+                        var quantityInput = $('#quantity-input').val();
+
+                        // Hiển thị số lượng tồn kho
+                        if (stockQuantity > 0) {
+                            $('#stock-quantity').text('Số lượng tồn kho: ' + stockQuantity);
+                        } else {
+                            $('#stock-quantity').text('Hết hàng');
+                        }
+
+                        // Kiểm tra số lượng nhập vào
+                        if (stockQuantity <= 0) {
+                            $('#add-to-cart-btn').addClass('disabled').css('opacity', '0.5');
+                            $('#error-message').text('Sản phẩm đã hết hàng.').show();
+                        } else if (parseInt(quantityInput) > stockQuantity) {
+                            $('#add-to-cart-btn').addClass('disabled').css('opacity', '0.5');
+                            $('#error-message').text('Số lượng vượt quá tồn kho.').show();
+                        } else {
+                            $('#add-to-cart-btn').removeClass('disabled').css('opacity', '1');
+                            $('#error-message').hide();
+                        }
+                    },
+                    error: function () {
+                        $('#stock-quantity').text('Không thể kiểm tra tồn kho.');
+                    }
+                });
+            } else {
+                $('#stock-quantity').text('Vui lòng chọn màu và size.');
+                $('#add-to-cart-btn').addClass('disabled').css('opacity', '0.5');
+            }
+        }
+
+        // Gọi hàm khi người dùng thay đổi số lượng
+        $('#quantity-input').on('input', function () {
+            updateStockQuantity();
+        });
+
+        // Gọi hàm khi người dùng chọn màu hoặc size
+        $('input[name="color"], input[name="size"]').on('change', function () {
+            updateStockQuantity();
+        });
+
+        // Gọi hàm khi trang được tải
+        $(document).ready(function () {
+            updateStockQuantity();
+        });
+
+        // Xử lý khi nhấn nút "Thêm vào giỏ hàng"
+        $('#add-to-cart-btn').on('click', function (e) {
+            e.preventDefault();
+
+            var selectedColorId = $('input[name="color"]:checked').val();
+            var selectedSizeId = $('input[name="size"]:checked').val();
+            var quantity = $('#quantity-input').val();
+            var productId = @Model.ProductID;
+
+            if (!selectedColorId || !selectedSizeId) {
+                showToast('Vui lòng chọn màu và size!', 'error');
+                return;
+            }
+
+            // Kiểm tra số lượng tồn kho trước khi thêm vào giỏ hàng
+            $.ajax({
+                url: '@Url.Action("GetStockQuantity", "Product")',
+                type: 'GET',
+                data: {
+                    productId: productId,
+                    colorId: selectedColorId,
+                    sizeId: selectedSizeId
+                },
+                success: function (response) {
+                    if (response.stock <= 0) {
+                        showToast('Sản phẩm đã hết hàng!', 'error');
+                    } else if (parseInt(quantity) > response.stock) {
+                        showToast('Số lượng vượt quá tồn kho!', 'error');
+                    } else if(parseInt(quantity) <= 0) {
+                    showToast('Xin hãy chọn ít nhất 1 cái!', 'error');
+                    }
+                    else {
+                        addToCartBtn();
+                    }
+                },
+                error: function () {
+                    alert('Không thể kiểm tra tồn kho.');
+                }
+            });
+        });
+    </script>
+    <script src="@Url.Content("~/Frontend/js/addToCart.js")"></script>
+}

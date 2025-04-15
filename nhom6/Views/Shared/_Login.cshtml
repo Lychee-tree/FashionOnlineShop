@@ -1,0 +1,34 @@
+﻿<!--Đây là file để chèn menu Đăng xuất, Admin site-->
+
+
+@{
+    var userName = Session["UserName"] as string;
+    var roleId = Session["RoleID"] as int?;
+    var userId = Session["UserID"] as int?;
+}
+
+<div class="header__top__hover user-menu">
+    <span>
+        <i class="fa fa-user"></i>
+        @if (!string.IsNullOrEmpty(userName))
+        {
+            @:Xin chào, @userName
+        }
+    </span>
+    <ul>
+        @if (!string.IsNullOrEmpty(userName) && roleId != null)
+        {
+            if (roleId == 0) // Employee
+            {
+                <li><a href="@Url.Action("Index", "Admin", new { area = "Admin" })">👨‍💼 Admin Site</a></li>
+            }
+
+            <li><a href="@Url.Action("Logout", "Login")">🚪 Đăng xuất</a></li>
+        }
+        else
+        {
+            <li><a href="@Url.Action("Login", "Login")">🔑 Đăng nhập</a></li>
+            <li><a href="@Url.Action("Register", "Login")">📝 Đăng ký</a></li>
+        }
+    </ul>
+</div>

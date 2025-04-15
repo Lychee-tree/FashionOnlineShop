@@ -1,0 +1,46 @@
+﻿@model nhom6.Areas.Admin.Models.OrderDetailViewModel
+
+@{
+    ViewBag.Title = "OrderDetail";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h3 class="mb-4">Chi tiết đơn hàng @Model.OrderId</h3>
+
+    <div class="card p-3 mb-4">
+        <h5>Thông tin khách hàng</h5>
+        <p><strong>Tên khách hàng:</strong> @Model.CustomerName</p>
+        <p><strong>Số điện thoại:</strong> @Model.Phone</p>
+        <p><strong>Tổng tiền:</strong> @Model.TotalPrice.ToString("N0") VND</p>
+        <p><strong>Giảm giá:</strong> @Model.DiscountValue.ToString("N0")%</p>
+    </div>
+
+    <div class="card p-3">
+        <h5>Danh sách sản phẩm</h5>
+        <table class="table table-bordered mt-3">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Màu sắc</th>
+                    <th>Size</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Products)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Color</td>
+                        <td>@item.Size</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.TotalPrice.ToString("N0") VND</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

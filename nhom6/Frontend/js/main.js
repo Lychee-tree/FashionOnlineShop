@@ -34,11 +34,15 @@ console.log("Mainjs đã thực thi xong");
     /*------------------
         Background Set
     --------------------*/
-    $('.set-bg').each(function () {
-        var bg = $(this).data('setbg');
-        $(this).css('background-image', 'url(' + bg + ')');
-    });
-
+    window.applyBackgroundImages = function () {
+        $('.set-bg').each(function () {
+            var bg = $(this).data('setbg');
+            if (bg) {
+                $(this).css('background-image', 'url(' + bg + ')');
+            }
+        });
+    };
+    applyBackgroundImages();
     //Search Switch
     $('.search-switch').on('click', function () {
         $('.search-model').fadeIn(400);
@@ -122,6 +126,12 @@ console.log("Mainjs đã thực thi xong");
         horizrailenabled: false
     });
 
+    // Color button
+    $('input[name="color"]').on('change', function () {
+        $('input[name="color"]').parent().removeClass('active');
+        $(this).parent().addClass('active');
+        updateStockQuantity();
+    });
     /*------------------
         CountDown
     --------------------*/
@@ -196,6 +206,8 @@ console.log("Mainjs đã thực thi xong");
             }
         }
         $button.parent().find('input').val(newVal);
+        // active change event
+        $button.parent().find('input').trigger('change');
     });
 
     /*------------------
@@ -231,10 +243,67 @@ window.formatPrices = function () {
     let unitPrice = document.querySelectorAll('.unit-price');
     console.log("Hàm formatPrices đã được thực thi");
     unitPrice.forEach(p => {
-        let price = parseInt(p.innerText); // Change data type to int
+        let price = parseInt(p.innerText.replace(/\D/g, '')); // Change data type to int
         if (!isNaN(price)) {
             p.innerText = price.toLocaleString('vi-VN') + " VND";
         }
     });
 }
+window.showToast = function (message, type = 'success') {
+    const toast = document.getElementById('cart-toast');
+    const toastHeader = document.getElementById('toast-header');
+    const toastBody = document.getElementById('toast-body');
+    const toastTitle = document.getElementById('toast-title');
+
+    // Reset
+    toastHeader.className = 'toast-header text-white';
+
+    switch (type) {
+        case 'success':
+            toastHeader.classList.add('bg-success');
+            toastTitle.textContent = 'Thành công';
+            break;
+        case 'error':
+            toastHeader.classList.add('bg-danger');
+            toastTitle.textContent = 'Lỗi';
+            break;
+    }
+
+    toastBody.innerHTML = message;
+
+    // Khởi tạo và show toast bằng jQuery của Bootstrap 4
+    $('#cart-toast').toast('dispose'); // Đảm bảo xóa instance cũ nếu có
+    $('#cart-toast').toast({ delay: 10000 });
+    $('#cart-toast').toast('show');
+
+    console.log('Toast đã được hiển thị!');
+}
+$(document).ready(function () {
+    var cart = document.getElementById("cart");
+
+    fetch('/Login/CheckLogin', {
+        method: 'POST'
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.isLoggedIn) {
+                // Hiện số lượng giỏ hàng
+                $.get('/AddToCart/GetCartCount', function (res) {
+                    if (res.success) {
+                        document.getElementById("cart-count").textContent = res.cartCount;
+                    }
+                });
+            } else {
+                cart.replaceWith(cart.cloneNode(true));
+                cart = document.getElementById("cart");
+                cart.addEventListener('click', function (e) { 
+                    e.preventDefault();
+                    $('#loginRequiredModal').modal('show'); //do sử dụng Bootstrap 4.41 đây là hàm gọi modal 
+                });
+            }
+        });
+    document.getElementById("goToLoginBtn").addEventListener("click", function () {
+        window.location.href = "/Login/Login"; //chuyển hướng đến trang login do Tuyền làm
+    });
+});
 

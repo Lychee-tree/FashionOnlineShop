@@ -30,12 +30,20 @@
 /* Template default CSS
 /*----------------------------------------*/
 
-html,
-body {
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html, body {
 	height: 100%;
+	width: 100%;
+	overflow-x: hidden; /* Ẩn thanh cuộn ngang nếu có */
 	font-family: "Nunito Sans", sans-serif;
 	-webkit-font-smoothing: antialiased;
 }
+
 
 h1,
 h2,
@@ -105,7 +113,10 @@ ol {
 	padding: 0;
 	margin: 0;
 }
-
+.row {
+	-webkit-justify-content: inherit;
+	justify-content: center;
+}
 /*---------------------
   Helper CSS
 -----------------------*/
@@ -678,6 +689,17 @@ ol {
   Banner
 -----------------------*/
 
+h2.bst {
+	font-size: 70px !important;
+	line-height: normal !important;
+	font-weight: 900 !important;
+}
+.row_categories {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width:100%;
+}
 .blog {
 	padding-bottom: 55px;
 }
@@ -713,7 +735,10 @@ ol {
 }
 
 .banner__item__pic {
-	float: right;
+	display: flex;
+	justify-content: center; /* Căn giữa theo chiều ngang */
+	align-items: center; /* Căn giữa theo chiều dọc */
+	height: 100vh;
 }
 
 .banner__item__text {
@@ -1416,6 +1441,7 @@ ol {
 
 .shop__product__option__right {
 	text-align: left;
+	margin-left: -50%;
 }
 
 .shop__product__option__right p {
@@ -1489,8 +1515,24 @@ ol {
 /*---------------------
   Shop
 -----------------------*/
+.col-lg-3.col-md-3 {
+	display: flex;
+	flex-direction: column;
+}
+
+section.shop-details {
+	display: grid;
+	grid-template-areas:
+		"lt rt";
+	grid-template-columns: 2fr 1fr;
+}
+
+label.active {
+	border: 2px solid black !important; /* Viền đen khi được chọn */
+}
 
 .product__details__pic {
+	grid-area: lt;
 	text-align: center;
 	background: #f3f2ee;
 	padding: 40px 0 60px;
@@ -1548,6 +1590,7 @@ ol {
 }
 
 .product__details__breadcrumb {
+	text-align: center;
 	margin-bottom: 30px;
 }
 
@@ -1582,7 +1625,7 @@ ol {
 	width: 56px;
 	border: 4px solid #ffffff;
 	border-radius: 50%;
-	font-size: 20px;
+	font-size: 20px;.product__details__text
 	color: #ffffff;
 	line-height: 48px;
 	text-align: center;
@@ -1595,7 +1638,11 @@ ol {
 }
 
 .product__details__text {
-	text-align: center;
+	/* text-align: center;*/
+}
+
+.product__details__stock {
+	padding: 10px 10px;
 }
 
 .product__details__text h4 {
@@ -1649,9 +1696,9 @@ ol {
 }
 
 .product__details__option__size span {
-	color: #111111;
-	display: inline-block;
-	margin-right: 10px;
+	display: block;
+	padding: 10px 10px;
+	/* margin-right: 50px; */
 }
 
 .product__details__option__size label {
@@ -1679,16 +1726,18 @@ ol {
 }
 
 .product__details__option__color {
-	display: inline-block;
-	position: relative;
+	display: flex;
+	padding: 10px 10px;
+	/*	position: relative;*/
 	top: 10px;
+	align-items: center;
 }
 
 .product__details__option__color span {
 	color: #111111;
 	display: inline-block;
 	margin-right: 10px;
-	position: relative;
+	/* position: relative;*/
 	top: -9px;
 }
 
@@ -1703,27 +1752,12 @@ ol {
 	cursor: pointer;
 }
 
-.product__details__option__color label.c-1 {
-	background: #0b090c;
-}
+/* CSS cho nút màu khi được chọn */
+/*.product__details__option__color label.active {
+	border: 2px solid black !important;*/ /* Viền đen khi được chọn */
+/*}*/
 
-.product__details__option__color label.c-2 {
-	background: #20315f;
-}
-
-.product__details__option__color label.c-3 {
-	background: #f1af4d;
-}
-
-.product__details__option__color label.c-4 {
-	background: #ed1c24;
-}
-
-.product__details__option__color label.c-9 {
-	background: #ffffff;
-}
-
-.product__details__option__color label:after {
+/*.product__details__option__color label:after {
 	position: absolute;
 	left: -3px;
 	top: -3px;
@@ -1731,7 +1765,15 @@ ol {
 	width: 36px;
 	border: 1px solid #e5e5e5;
 	content: "";
-	border-radius: 50%;
+	border-radius: 50%;*/
+}
+
+label.active {
+	border: 3px solid black;
+}
+
+h5.qtxt {
+	padding-bottom: 10px;
 }
 
 .product__details__option__color label input {
@@ -1740,12 +1782,18 @@ ol {
 }
 
 .product__details__cart__option {
-	margin-bottom: 25px;
+	display: flex;
+	/* margin-bottom: 25px; */
+	/* margin-top: 25px; */
+	padding: 10px 10px 20px 10px;
 }
 
 .product__details__cart__option .quantity {
-	display: inline-block;
+	display: flex;
 	margin-right: 20px;
+	justify-content: flex-start;
+	align-items: center;
+	margin-left: 20px;
 }
 
 .product__details__cart__option .quantity .pro-qty {
@@ -1798,7 +1846,9 @@ ol {
 .product__details__btns__option a:last-child {
 	margin-right: 0;
 }
-
+.product__details__stock {
+	padding: 10px;
+}
 .product__details__last__option h5 {
 	color: #111111;
 	font-weight: 700;
@@ -1826,7 +1876,7 @@ ol {
 }
 
 .product__details__last__option ul {
-	padding-top: 40px;
+	padding: 10px;
 }
 
 .product__details__last__option ul li {
@@ -1843,7 +1893,7 @@ ol {
 }
 
 .product__details__tab {
-	padding-top: 60px;
+	/*padding-top: 60px;*/
 }
 
 .product__details__tab .nav-tabs {
@@ -1863,7 +1913,7 @@ ol {
 
 .product__details__tab .nav-tabs .nav-item .nav-link {
 	font-size: 20px;
-	color: #b7b7b7;
+	color: #111111;
 	padding: 0;
 	border: none;
 	font-weight: 700;
@@ -1877,14 +1927,17 @@ ol {
 
 .product__details__tab__content {
 	padding-top: 35px;
+	display: flex;
+	justify-content: center;
 }
 
 .note {
 	color: #111111;
 	font-size: 18px;
-	font-weight: 700;
+	font-weight: 200;
 	line-height: 28px;
 	margin-bottom: 25px;
+	text-align: center;
 }
 
 .product__details__tab__content__item {
@@ -3689,10 +3742,11 @@ ol {
 		min-width: 100%;
 	}
 	.banner__item__text {
-		max-width: 100%;
+		max-width: 300px;
+		display: flex;
 		position: relative;
-		top: 0;
-		padding-top: 22px;
+		left: 30px;
+		top: 20px;
 	}
 	.filter__controls li {
 		margin-right: 15px;
@@ -3848,4 +3902,42 @@ ol {
 	.categories__text:before {
 		height: 250px;
 	}
+}
+.product__details__option__color label {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	border: 2px solid transparent; /* Viền trong suốt mặc định */
+	border-radius: 50%; /* Làm tròn nút màu */
+	margin: 5px;
+	cursor: pointer;
+	position: relative;
+}
+
+/* CSS cho nút màu khi được chọn */
+.product__details__option__color label.active {
+	border: 2px solid black !important; /* Viền đen khi được chọn */
+}
+
+/* CSS cho màu nền của nút màu */
+.product__details__option__color label span.color-swatch {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+
+/* Tăng kích thước toast*/
+.toast.toast-lg {
+	min-width: 400px; /* Tăng độ rộng tối thiểu */
+}
+
+.toast.toast-lg .toast-header {
+	font-size: 1.2rem; /* Tăng kích thước chữ header */
+	padding: 1rem 1.5rem; /* Tăng khoảng cách bên trong header */
+}
+
+.toast.toast-lg .toast-body {
+	font-size: 1.1rem; /* Tăng kích thước chữ nội dung */
+	padding: 1rem 1.5rem;
 }

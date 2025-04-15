@@ -1,0 +1,103 @@
+﻿@model nhom6.Product
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+    var instocks = ViewBag.Instocks as List<Instock>;
+}
+<link href="@Url.Content("~/Areas/Admin/Frontend/css/customedit.css")" rel="stylesheet">
+<link href="@Url.Content("~/Areas/Admin/Frontend/css/customdetail.css")" rel="stylesheet">
+
+<div id="content-wrapper" class="d-flex flex-column" style="padding:30px;">
+    <section class="edit-product">
+        <div class="container">
+            <div class="form-container">
+                <h2>Chỉnh sửa sản phẩm</h2>
+
+                @using (Html.BeginForm("Edit", "ProductAdmin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.ProductID)
+
+                    <div class="input-group">
+                        <label for="ProductName">Tên sản phẩm</label>
+                        @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control", placeholder = "Nhập tên sản phẩm" })
+                    </div>
+
+                    <div class="input-group">
+                        <label for="CategoryID">Danh mục</label>
+                        @Html.DropDownListFor(model => model.CategoryID, ViewBag.Categories as SelectList, "-- Chọn danh mục --", new { @class = "form-control" })
+                    </div>
+
+                    <div class="input-group">
+                        <label for="UnitPrice">Giá</label>
+                        @Html.TextBoxFor(model => model.UnitPrice, new { @class = "form-control", type = "number", placeholder = "Nhập giá sản phẩm" }) <span style="color:black;"> VND</span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="UnitDescription">Mô tả sản phẩm</label>
+                        @Html.TextAreaFor(model => model.UnitDescription, new { @class = "form-control", rows = 4, placeholder = "Nhập mô tả..." })
+                    </div>
+
+                    <div class="image-preview">
+                        <label><b>Hình ảnh hiện tại</b></label>
+                        <img src="~/Content/Image/@Model.UnitImage" class="product-image" alt="Ảnh sản phẩm" />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="uploadImage">Chọn ảnh mới</label>
+                        <input type="file" name="uploadImage" class="form-control" />
+                    </div>
+                    //Màu, Size, Tồn kho
+                    <div class="input-group">
+                        <b style="color:black;">Màu sắc, Size và Tồn kho</b>
+
+                        <table class="instock-table">
+                            <thead>
+                                <tr>
+                                    <th style="color:black;">Màu sắc</th>
+                                    <th style="color:black;">Mã màu</th>
+                                    <th style="color:black;">Size</th>
+                                    <th style="color:black;">Tồn kho</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var instock in instocks)
+                                {
+                                    <tr>
+                                        <td style="color:black;" >@instock.Color.ColorName</td>
+                                        <td style="color:black;">@instock.Color.ColorCode</td>
+                                        <td style="color:black;" >@instock.Size.SizeName</td>
+                                        <td style="color:black;" class="instock">
+                                            @Html.Hidden("Instocks.Index", instock.PvID) <!-- giúp model binder biết có nhiều item -->
+
+                                            @Html.Hidden($"Instocks[{instock.PvID}].PvID", instock.PvID)
+
+                                            @Html.TextBox($"Instocks[{instock.PvID}].Quantity", instock.Instock1, new
+                                           {
+                                               @class = "form-control",
+                                               type = "number",
+                                               min = "0",
+                                               placeholder = "Nhập số lượng..."
+                                           })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                    <div class="button-group">
+                        <button type="submit" class="btn">Lưu</button>
+                        <a href="@Url.Action("list_Product")" class="btn">Hủy</a>
+                        <a href="@Url.Action("AddColorImages", "ProductAdmin", new { id = Model.ProductID })" class="btn">Chỉnh sửa ảnh mẫu mã</a>
+                    </div>
+                }
+            </div>
+        </div>
+
+
+    </section>
+</div>

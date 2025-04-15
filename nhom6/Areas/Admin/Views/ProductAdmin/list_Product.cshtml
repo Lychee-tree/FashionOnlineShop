@@ -1,0 +1,114 @@
+﻿@model IEnumerable<nhom6.Product>
+
+@{
+    ViewBag.Title = "list_Product";
+    Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
+}
+
+<link href="@Url.Content("~/Areas/Admin/Frontend/css/customlistproduct.css")" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<h2 style="font-weight: bolder">Danh sách sản phẩm</h2>
+
+<form method="get" action="@Url.Action("list_Product", "ProductAdmin")" class="search-form">
+    <div class="search-box">
+        <input type="text" name="searchTerm" placeholder="Tìm kiếm sản phẩm..." value="@Request.QueryString["searchTerm"]" />
+        <button type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+</form>
+
+<table class="table custom-table">
+    <thead>
+        <tr>
+            <th>Tên sản phẩm</th>
+            <th>Loại</th>
+            <th>Giá</th>
+            <th>Hình ảnh</th>
+            <th>Chi tiết tồn kho</th> <!-- Cột mới -->
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr id="row_@item.ProductID">
+                    <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Category.categoryName)</td>
+                    <td>@item.UnitPrice.ToString("N0") VND</td>
+                    <td>
+                        <img src="~/Content/Image/@item.UnitImage" alt="Product Image" />
+                    </td>
+                    <td>
+                        @if (item.Instocks != null && item.Instocks.Any())
+                        {
+                            var groupedByColor = item.Instocks.GroupBy(i => i.Color.ColorName);
+                            foreach (var colorGroup in groupedByColor)
+                            {
+                                <div style="margin-bottom: 5px;">
+                                    <strong style="color:@colorGroup.First().Color.ColorCode">Màu: @colorGroup.Key</strong><br />
+                                    @foreach (var stock in colorGroup)
+                                    {
+                                        <span>Size: @stock.Size.SizeName - Tồn: @stock.Instock1</span><br />
+                                    }
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <span>Không có dữ liệu tồn kho</span>
+                        }
+                    </td>
+                    <td>
+                        <a class="custom-btn" href='@Url.Action("Edit", "ProductAdmin", new { id = item.ProductID })' >Edit</a> |
+                        <a class="custom-btn" href='@Url.Action("Detail", "ProductAdmin", new { id = item.ProductID })'>Detail</a> |
+                        <a href="#" class="delete-link" data-id="@item.ProductID" id="deleted">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6">Không tìm thấy sản phẩm phù hợp.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        $(".delete-link").click(function (e) {
+            e.preventDefault();
+            var productId = $(this).data("id");
+            var row = $("#row_" + productId);
+            if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
+                $.ajax({
+                    url: '@Url.Action("DeleteProduct", "ProductAdmin")',
+                    type: 'POST',
+                    data: { id: productId },
+                    dataType: "json",
+                    cache: false,
+                    success: function (response) {
+                        if (response.success) {
+                            row.fadeOut(300, function () {
+                                $(this).remove();
+                            });
+                        } else {
+                            alert("Xóa thất bại: " + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Lỗi Ajax: ", error);
+                        alert("Có lỗi xảy ra, vui lòng thử lại.");
+                    }
+                });
+            }
+        });
+    });
+    </script>
+}
