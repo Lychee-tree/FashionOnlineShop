@@ -8,6 +8,8 @@ using Antlr.Runtime.Misc;
 using System.Data.Entity;
 using System.IO;
 using System.Reflection;
+using System.Drawing;
+using System.Data.Entity.Infrastructure;
 
 
 namespace nhom6.Areas.Admin.Controllers
@@ -86,7 +88,8 @@ namespace nhom6.Areas.Admin.Controllers
                 }
 
                 if (!string.IsNullOrEmpty(product.UnitImage))
-                {
+                {   
+
                     var mainImagePath = Server.MapPath("~/Content/Image/" + product.UnitImage);
                     if (System.IO.File.Exists(mainImagePath))
                         System.IO.File.Delete(mainImagePath);
@@ -136,41 +139,106 @@ namespace nhom6.Areas.Admin.Controllers
             product.UnitPrice = model.UnitPrice;
             product.CategoryID = model.CategoryID;
 
-            // Cập nhật ảnh mới nếu có
+            // Cập nhật ảnh nếu có
             if (uploadImage != null && uploadImage.ContentLength > 0)
             {
+                var path = Server.MapPath("~/Content/Image/" + product.UnitImage);
+                if (System.IO.File.Exists(path))
+                    System.IO.File.Delete(path);
+
                 string fileName = Path.GetFileName(uploadImage.FileName);
-                string path = Path.Combine(Server.MapPath("~/Content/Image/"), fileName);
-                uploadImage.SaveAs(path);
+                string newPath = Path.Combine(Server.MapPath("~/Content/Image/"), fileName);
+                uploadImage.SaveAs(newPath);
                 product.UnitImage = fileName;
             }
 
             db.Entry(product).State = EntityState.Modified;
 
-            // ✅ Cập nhật tồn kho
-            // Lặp các khóa PvID và Quantity từ form
+            // Cập nhật tồn kho cũ
             var keys = form.AllKeys.Where(k => k.StartsWith("Instocks[") && k.EndsWith("].Quantity"));
             foreach (var key in keys)
             {
-                // Extract PvID từ tên key: Instocks[123].Quantity => 123
                 var pvIDStr = key.Substring(9, key.IndexOf("]") - 9);
                 if (int.TryParse(pvIDStr, out int pvID))
                 {
                     var instock = db.Instocks.FirstOrDefault(i => i.PvID == pvID);
-                    if (instock != null)
+                    if (instock != null && int.TryParse(form[key], out int quantity))
                     {
-                        int quantity;
-                        if (int.TryParse(form[key], out quantity))
-                        {
-                            instock.Instock1 = quantity;
-                            db.Entry(instock).State = EntityState.Modified;
-                        }
+                        instock.Instock1 = quantity;
+                        db.Entry(instock).State = EntityState.Modified;
                     }
                 }
             }
 
+            // Thêm mẫu mã mới
+            int index = 0;
+            while (true)
+            {
+                var colorKey = $"ColorID_{index}";
+                var sizeKey = $"SizeID_{index}";
+                var quantityKey = $"Instock_{index}";
+
+                if (!form.AllKeys.Contains(colorKey)) break;
+
+                int colorId = int.Parse(form[colorKey]);
+                int sizeId = int.Parse(form[sizeKey]);
+                int quantity = int.Parse(form[quantityKey]);
+
+                // Kiểm tra xem mẫu mã này đã tồn tại chưa
+                bool exists = db.Instocks.Any(i => i.ProductID == model.ProductID && i.ColorID == colorId && i.SizeID == sizeId);
+                if (exists)
+                {
+                    if (string.IsNullOrEmpty(model.UnitImage))
+                    {
+                        var oldProduct = db.Products.AsNoTracking().FirstOrDefault(p => p.ProductID == model.ProductID);
+                        if (oldProduct != null)
+                            model.UnitImage = oldProduct.UnitImage;
+                    }
+
+                    ModelState.AddModelError("", $"Mẫu mã {index + 1} đã tồn tại.");
+                    LoadViewBagsForEdit(model.ProductID, model.CategoryID);
+                    return View(model); 
+                }
+
+                // Thêm mẫu mã mới
+                var newInstock = new Instock
+                {
+                    ProductID = model.ProductID,
+                    ColorID = colorId,
+                    SizeID = sizeId,
+                    Instock1 = quantity
+                };
+                db.Instocks.Add(newInstock);
+
+                // Kiểm tra nếu ảnh mẫu mã chưa có thì thêm vào ColorImage
+                bool hasColorImage = db.ColorImages.Any(ci => ci.ProductID == model.ProductID && ci.ColorID == colorId);
+                if (!hasColorImage)
+                {
+                    db.ColorImages.Add(new ColorImage
+                    {
+                        ProductID = model.ProductID,
+                        ColorID = colorId,
+                        Image = null 
+                    });
+                }
+
+                index++;
+            }
+
+
             db.SaveChanges();
-            return RedirectToAction("list_Product");
+            return RedirectToAction("Edit", new { id = model.ProductID });
+        }
+
+        private void LoadViewBagsForEdit(int productId, int? selectedCategoryId = null)
+        {
+            ViewBag.Instocks = db.Instocks
+                .Include(i => i.Color)
+                .Include(i => i.Size)
+                .Where(i => i.ProductID == productId)
+                .ToList();
+
+            ViewBag.Categories = new SelectList(db.Categories, "CategoryID", "CategoryName", selectedCategoryId);
         }
 
         public ActionResult Edit(int id)
@@ -178,7 +246,8 @@ namespace nhom6.Areas.Admin.Controllers
             var product = db.Products.Find(id);
             if (product == null) return HttpNotFound();
             ViewBag.Categories = new SelectList(db.Categories, "CategoryID", "CategoryName", product.CategoryID);
-
+            ViewBag.Colors= db.Colors.ToList();
+            ViewBag.Sizes = db.Sizes.ToList();
             // Lấy danh sách mẫu mã (Color + Size + Instock) theo ProductID
             ViewBag.Instocks = db.Instocks
                 .Where(i => i.ProductID == id).ToList();
@@ -378,6 +447,16 @@ namespace nhom6.Areas.Admin.Controllers
                     var colorImage = db.ColorImages.FirstOrDefault(ci => ci.ProductID == productId && ci.ColorID == colorId);
                     if (colorImage != null)
                     {
+                        // Xóa ảnh cũ nếu có
+                        if (!string.IsNullOrEmpty(colorImage.Image))
+                        {
+                            string oldPath = Path.Combine(Server.MapPath("~/Content/Image/"), colorImage.Image);
+                            if (System.IO.File.Exists(oldPath))
+                            {
+                                System.IO.File.Delete(oldPath);
+                            }
+                        }
+
                         colorImage.Image = fileName;
                         db.Entry(colorImage).State = EntityState.Modified;
                     }
@@ -387,7 +466,7 @@ namespace nhom6.Areas.Admin.Controllers
             }
 
             db.SaveChanges();
-            return RedirectToAction("list_Product");
+            return RedirectToAction("AddColorImages", new { id = productId });
         }
 
     }

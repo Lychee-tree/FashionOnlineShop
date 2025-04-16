@@ -1,9 +1,31 @@
 ﻿@model nhom6.Product
-
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary()
+    </div>
+}
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/adminLayout.cshtml";
     var instocks = ViewBag.Instocks as List<Instock>;
+    var colors= ViewBag.Colors as List<Color>;
+    var sizes = ViewBag.Sizes as List<Size>;
+    var colorOptions = "";
+    var sizeOptions = "";
+
+    var colorIds = new HashSet<int>();
+    var sizeIds = new HashSet<int>();
+
+    foreach (var color in colors)
+    {
+        colorOptions += $"<option value='{color.ColorID}'>{color.ColorName}</option>";
+    }
+
+    foreach (var size in sizes)
+    {
+        sizeOptions += $"<option value='{size.SizeID}'>{size.SizeName}</option>";
+    }
 }
 <link href="@Url.Content("~/Areas/Admin/Frontend/css/customedit.css")" rel="stylesheet">
 <link href="@Url.Content("~/Areas/Admin/Frontend/css/customdetail.css")" rel="stylesheet">
@@ -42,6 +64,8 @@
                     <div class="image-preview">
                         <label><b>Hình ảnh hiện tại</b></label>
                         <img src="~/Content/Image/@Model.UnitImage" class="product-image" alt="Ảnh sản phẩm" />
+                        @Html.HiddenFor(model => model.UnitImage)
+
                     </div>
 
                     <div class="input-group">
@@ -65,30 +89,35 @@
                                 @foreach (var instock in instocks)
                                 {
                                     <tr>
-                                        <td style="color:black;" >@instock.Color.ColorName</td>
+                                        <td style="color:black;">@instock.Color.ColorName</td>
                                         <td style="color:black;">@instock.Color.ColorCode</td>
-                                        <td style="color:black;" >@instock.Size.SizeName</td>
+                                        <td style="color:black;">@instock.Size.SizeName</td>
                                         <td style="color:black;" class="instock">
                                             @Html.Hidden("Instocks.Index", instock.PvID) <!-- giúp model binder biết có nhiều item -->
 
                                             @Html.Hidden($"Instocks[{instock.PvID}].PvID", instock.PvID)
 
                                             @Html.TextBox($"Instocks[{instock.PvID}].Quantity", instock.Instock1, new
-                                           {
-                                               @class = "form-control",
-                                               type = "number",
-                                               min = "0",
-                                               placeholder = "Nhập số lượng..."
-                                           })
+                                       {
+                                           @class = "form-control",
+                                           type = "number",
+                                           min = "0",
+                                           placeholder = "Nhập số lượng..."
+                                       })
                                         </td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
+                    <div class="input-group">
+                        <label><b>Mẫu mã mới</b></label>
+                        <div id="variant-container">
 
+                        </div>
 
-
+                    </div>
+                    <button type="button" class="btn btn-secondary mt-2" id="add-variant-btn">+ Thêm </button>
                     <div class="button-group">
                         <button type="submit" class="btn">Lưu</button>
                         <a href="@Url.Action("list_Product")" class="btn">Hủy</a>
@@ -98,6 +127,35 @@
             </div>
         </div>
 
-
     </section>
 </div>
+
+@section Scripts {
+    <script>
+        let index = 0;
+        const colorOptions = `@Html.Raw(colorOptions)`;
+        const sizeOptions = `@Html.Raw(sizeOptions)`;
+
+        document.getElementById("add-variant-btn").addEventListener("click", function () {
+            const container = document.getElementById("variant-container");
+            const row = document.createElement("div");
+            row.classList.add("variant-row");
+            row.innerHTML = `
+                <br/>
+                <h6 style="color: black;">Mẫu ${index + 1}</h6>
+                <br/>
+                <select name="ColorID_${index}" class="form-control" required>
+                    ${colorOptions}
+                </select>
+                <br/>
+                <select name="SizeID_${index}" class="form-control" required>
+                    ${sizeOptions}
+                </select>
+                <br/>
+                <input type="number" name="Instock_${index}" class="form-control" placeholder="Tồn kho" min="0" required />
+            `;
+            container.appendChild(row);
+            index++;
+        });
+    </script>
+}

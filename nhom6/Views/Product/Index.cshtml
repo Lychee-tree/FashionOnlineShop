@@ -126,7 +126,7 @@
                             </div>
                             <div class="product__item__text">
                                 <h6>@productItem.ProductName</h6>
-                                <a href="ProductDetails/@productItem.ProductID" class="add-cart">Xem chi tiết</a>
+                                <a href="/Product/ProductDetails/@productItem.ProductID" class="add-cart">Xem chi tiết</a>
                                 <h5 class="unit-price">@productItem.UnitPrice</h5>
                                 <div class="product__color__select">
                                     @if (productItem.Colors != null && productItem.Colors.Count > 0)
@@ -166,7 +166,7 @@
                             </div>
                             <div class="product__item__text">
                                 <h6>@productItem.ProductName</h6>
-                                <a href="ProductDetails/@productItem.ProductID" class="add-cart">Xem chi tiết</a>
+                                <a href="/Product/ProductDetails/@productItem.ProductID" class="add-cart">Xem chi tiết</a>
                                 <h5 unit-price>@productItem.UnitPrice</h5>
                                 <div class="product__color__select">
                                     @if (productItem.Colors != null && productItem.Colors.Count > 0)
@@ -204,7 +204,7 @@
                             </div>
                             <div class="product__item__text">
                                 <h6>@productItem.ProductName</h6>
-                                <a href="ProductDetails/@productItem.ProductID" class="add-cart">Xem chi tiết</a>
+                                <a href="/Product/ProductDetails/@productItem.ProductID" class="add-cart">Xem chi tiết</a>
                                 <h5 class="unit-price">@productItem.UnitPrice</h5>
                                 <div class="product__color__select">
                                     @if (productItem.Colors != null && productItem.Colors.Count > 0)
@@ -238,7 +238,7 @@
             <div class="modal-content rounded-3">
                 <div class="modal-header">
                     <h5 class="modal-title" id="loginRequiredModalLabel">Yêu cầu đăng nhập</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Đóng">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -246,7 +246,7 @@
                     Vui lòng đăng nhập để tiếp tục mua hàng. Bạn muốn đăng nhập chứ?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Để sau</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Để sau</button>
                     <button type="button" class="btn btn-primary" id="goToLoginBtn">Đăng nhập</button>
                 </div>
             </div>

@@ -20,15 +20,15 @@
         {
             if (roleId == 0) // Employee
             {
-                <li><a href="@Url.Action("Index", "Admin", new { area = "Admin" })">👨‍💼 Admin Site</a></li>
+                <li><a href="@Url.Action("list_Product", "ProductAdmin", new { area = "Admin" })">Chuyển đến giao diện quản lý</a></li>
             }
 
-            <li><a href="@Url.Action("Logout", "Login")">🚪 Đăng xuất</a></li>
+            <li><a href="@Url.Action("Logout", "Login")">Đăng xuất</a></li>
         }
         else
         {
-            <li><a href="@Url.Action("Login", "Login")">🔑 Đăng nhập</a></li>
-            <li><a href="@Url.Action("Register", "Login")">📝 Đăng ký</a></li>
+            <li><a href="@Url.Action("Login", "Login")">Đăng nhập</a></li>
+            <li><a href="@Url.Action("Register", "Login")">Đăng ký</a></li>
         }
     </ul>
 </div>

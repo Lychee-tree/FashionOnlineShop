@@ -109,7 +109,7 @@
                     if (response.success) {
                         showToast('Đặt hàng thành công!', 'success');
                         setTimeout(() => {
-                            window.location.href = '/Order/Confirmation?orderId=' + orderId;
+                            window.location.href = '/Order/OrderList?orderId=' + orderId;
                         }, 1500);
                     } else {
                         showToast(response.message || 'Có lỗi xảy ra.', 'error');

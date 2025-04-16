@@ -82,10 +82,10 @@ namespace nhom6.Controllers
                     db.Customers.Add(customer);
                     db.SaveChanges();
 
-                    // ✅ Gán thông báo vào TempData để hiện pop-up bên Login
+                    // Gán thông báo vào TempData để hiện pop-up bên Login
                     TempData["SuccessMessage"] = "Đăng ký thành công! Vui lòng đăng nhập.";
 
-                    return RedirectToAction("Login", "Account");
+                    return RedirectToAction("Login", "Login");
                 }
             }
 
